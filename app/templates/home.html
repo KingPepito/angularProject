@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/app/js/homeModule.js"></script>
+    <script src="/app/js/homeController.js"></script>
+</head>
+<body ng-app = "myApp">
+
+    <h1>Welcome !</h1>
+    <h2>Here is a simple tool made to spam an E-mail Box</h2>
+
+    <div ng-controller="HomeController">
+
+        <form ng-submit="spam(formData.emailToSpam)">
+            <p>Please give me an e-mail to spam</p>
+            <input type="text" placeholder="email" ng-model="formData.emailToSpam">
+            <p>{{ emailToSpam }}</p>
+        </form>
+    </div>
+</body>
+</html>
