@@ -7,7 +7,15 @@ var http = require('http'),
     express = require('express'),
     app = express(),
     path = require('path'),
-    view = __dirname+'/app/templates/';
+    view = __dirname+'/app/templates/',
+    bodyParser = require("body-parser"),
+    nodeMailer = require("./app/js/nodeMailer.js");
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json());
 
 app.use(express.static('./'));
 
@@ -15,16 +23,31 @@ app.get('/', function(req, res) {
     res.sendFile(view + 'home.html');
 });
 
-app.get('/test', function(req, res) {
-    //mettre obj
-    res.sendFile('/views/exempleJson.html', { root : __dirname});
-});
+app.post('/sendMail', function(req, res) {
+    
+    //log the data
+    console.log("mail :"+req.body.mail
+        +       "nombre itération : "+req.body.howMany);
 
-app.get('/userDetails', function(req, res) {
-    //mettre obj
-    res.sendFile('/views/user.html', { root : __dirname});
+    var mail = req.body.mail;
+    var howMany = req.body.howMany;
+
+    //configuring mail address
+    nodeMailer.mailOptions.to = req.body.mail;
+
+    for(var i = howMany; i > 0; i-- ){
+        console.log(i);
+        // send mail with defined transport object
+        nodeMailer.transporter.sendMail(nodeMailer.mailOptions, function(error, info){
+            if(error){
+                return console.log(error);
+            }
+            console.log('Message sent: ' + info.response);
+        });
+    }
 });
 
 app.listen(1337);
+
 
 console.log("Serveur web lancé sur localhost:1337 ...");

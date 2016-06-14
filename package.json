@@ -1,0 +1,29 @@
+{
+  "name": "angularproject",
+  "version": "1.0.0",
+  "description": "little project to practice angular framework",
+  "main": "serv.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "nodemailer": "^2.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KingPepito/angularProject.git"
+  },
+  "keywords": [
+    "angular",
+    "ng",
+    "project"
+  ],
+  "author": "KingPepito",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KingPepito/angularProject/issues"
+  },
+  "homepage": "https://github.com/KingPepito/angularProject#readme"
+}

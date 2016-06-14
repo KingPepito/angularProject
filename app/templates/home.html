@@ -18,6 +18,11 @@
             <p>Please give me an e-mail to spam</p>
             <input type="text" placeholder="email" ng-model="formData.emailToSpam">
             <p>{{ emailToSpam }}</p>
+
+            <label for="repeatSelect"> Nombre de messages: </label>
+            <select name="repeatSelect" id="repeatSelect" ng-model="formData.nbrSpam">
+                <option ng-repeat="nbr in nbrSpam" value="{{nbr}}">{{nbr}}</option>
+            </select>
         </form>
     </div>
 </body>
