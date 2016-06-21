@@ -1,0 +1,22 @@
+<h1>Welcome !</h1>
+<h2>Here is a simple tool made to spam an E-mail Box</h2>
+
+<div ng-controller="HomeController">
+    <!--form sending email-->
+    <form ng-submit="spam(formData.emailToSpam)">
+        <p>Please give me an e-mail to spam</p>
+        <input type="email" placeholder="enter the mail to spam here" ng-model="formData.emailToSpam">
+        <label for="repeatSelect"> Nombre de messages: </label>
+
+        <select name="repeatSelect" id="repeatSelect" ng-model="formData.nbrSpam">
+            <option ng-repeat="nbr in nbrSpam" value="{{nbr}}">{{nbr}}</option>
+        </select>
+
+        <input type="text" placeholder="text to send" ng-model="formData.text">
+
+        <p>{{ error }}</p>
+        <input type="submit">
+
+    </form>
+
+</div>

@@ -17,10 +17,11 @@ exports.transporter = nodemailer.createTransport(({
 
 // setup e-mail data with unicode symbols
 exports.mailOptions = {
-    from: '"Fred Foo 👥" <foo@blurdybloop.com>', // sender address
+    from: '"Tarek Chabi" <foo@blurdybloop.com>', // sender address
     to: 'antoinectsmad@hotmail.fr', // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: 'Hello world 🐴', // plaintext body
-    html: '<b>message test 1</b>' // html body
+    subject: 'Coming out', // Subject line
+    text: "Bonjour, je voulais t'annoncer mon homosexualité, " +
+    "je n'ose pas t'en parler en face alors je t'écris ce mail", // plaintext body
+    html: "<p>je n'ose pas t'en parler en face alors je t'écris ce mail, je suis gay je l'assume. J'ai une grosse bite entre les dents à l'heure où je t'écris</p>" // html body
 };
 

@@ -5,7 +5,8 @@
   "main": "serv.js",
   "dependencies": {
     "express": "^4.13.4",
-    "nodemailer": "^2.4.2"
+    "nodemailer": "^2.4.2",
+    "sms-sending": "0.0.4"
   },
   "devDependencies": {},
   "scripts": {

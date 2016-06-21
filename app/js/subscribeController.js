@@ -1,12 +1,12 @@
 /**
- * Created by Antoine Chan on 14/06/2016.
+ * Created by Antoine Chan on 21/06/2016.
  */
 
 (function () {
 
 
 
-    function HomeController($scope, $http, $interval, $location) {
+    function SubscribeController($scope, $http, $interval, $location) {
 
         $scope.formData = {};
         $scope.formData2 = {};
@@ -37,6 +37,6 @@
 
     }
 
-    angular.module('myApp').controller("HomeController", HomeController);
+    angular.module('myApp').controller("SubscribeController", SubscribeController);
 
 })();

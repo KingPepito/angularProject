@@ -10,20 +10,13 @@
 <body ng-app = "myApp">
 
     <h1>Welcome !</h1>
-    <h2>Here is a simple tool made to spam an E-mail Box</h2>
 
-    <div ng-controller="HomeController">
+    <h2>Here is a that will help you to do not waste food !</h2>
 
-        <form ng-submit="spam(formData.emailToSpam)">
-            <p>Please give me an e-mail to spam</p>
-            <input type="text" placeholder="email" ng-model="formData.emailToSpam">
-            <p>{{ emailToSpam }}</p>
-
-            <label for="repeatSelect"> Nombre de messages: </label>
-            <select name="repeatSelect" id="repeatSelect" ng-model="formData.nbrSpam">
-                <option ng-repeat="nbr in nbrSpam" value="{{nbr}}">{{nbr}}</option>
-            </select>
-        </form>
+    <div>
+        Please sign in or sign up to access your personal list
     </div>
+    <!--<div ng-include="'app/templates/signup.html'"></div>-->
+
 </body>
 </html>

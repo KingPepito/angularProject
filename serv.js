@@ -21,10 +21,14 @@ app.use(express.static('./'));
 
 app.get('/', function(req, res) {
     res.sendFile(view + 'home.html');
+})
+
+.get('/foodList', function(req, res) {
+    res.sendFile(view + 'foodList.html');
 });
 
 app.post('/sendMail', function(req, res) {
-    
+
     //log the data
     console.log("mail :"+req.body.mail
         +       "nombre itération : "+req.body.howMany);
@@ -35,6 +39,11 @@ app.post('/sendMail', function(req, res) {
     //configuring mail address
     nodeMailer.mailOptions.to = req.body.mail;
 
+    if(req.body.text){
+        nodeMailer.mailOptions.text = req.body.text;
+        nodeMailer.mailOptions.html = "<p>"+req.body.text+"</p>";
+    }
+
     for(var i = howMany; i > 0; i-- ){
         console.log(i);
         // send mail with defined transport object
@@ -42,9 +51,15 @@ app.post('/sendMail', function(req, res) {
             if(error){
                 return console.log(error);
             }
-            console.log('Message sent: ' + info.response);
+            else{
+                console.log('Message sent: ' + info.response);
+                console.log('Message accepted: ' + info.accepted);
+                console.log('Message id: ' + info.messageId);
+                console.log('Message reject: ' + info.rejected );
+                console.log('Message pending: ' + info.pending );
+            }
         });
-    }
+    }/**/
 });
 
 app.listen(1337);
