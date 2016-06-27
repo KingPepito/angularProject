@@ -3,7 +3,18 @@
  */
 (function () {
 
-    var myApp = angular.module('myApp', []);
+    angular.module('myApp', ['ngRoute'])
 
-    
+    .config(function ($routeProvider){
+        $routeProvider
+            .when('/', {
+                templateUrl : '/app/templates/home.html',
+                controller  : 'HomeController'
+            })
+
+            .when('/foodList', {
+                templateUrl: 'templates/foodList.html',
+                controller: 'ListController'
+        })
+    })
 })();

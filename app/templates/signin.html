@@ -1,0 +1,33 @@
+
+
+<div >
+    <!--form sending email-->
+    <!--<form ng-submit="spam(formData.emailToSpam)">-->
+        <!--<p>Please give me an e-mail to spam</p>-->
+        <!--<input type="email" placeholder="enter the mail to spam here" ng-model="formData.emailToSpam">-->
+        <!--<label for="repeatSelect"> Nombre de messages: </label>-->
+
+        <!--<select name="repeatSelect" id="repeatSelect" ng-model="formData.nbrSpam">-->
+            <!--<option ng-repeat="nbr in nbrSpam" value="{{nbr}}">{{nbr}}</option>-->
+        <!--</select>-->
+
+        <!--<input type="text" placeholder="text to send" ng-model="formData.text">-->
+
+        <!--<p>{{ error }}</p>-->
+        <!--<input type="submit">-->
+
+    <!--</form>-->
+
+    <form ng-submit="connexion(idUser, password)">
+        <p>Identifiant</p>
+        <input type="text" ng-model="idUser">
+
+        <p>Password</p>
+        <input type="text" ng-model="password">
+
+        <p><input type="submit"></p>
+    </form>
+
+    {{error}}
+
+</div>

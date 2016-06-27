@@ -9,15 +9,19 @@ var http = require('http'),
     path = require('path'),
     view = __dirname+'/app/templates/',
     bodyParser = require("body-parser"),
-    nodeMailer = require("./app/js/nodeMailer.js");
+    nodeMailer = require("./app/js/nodeMailer.js"),
+    db = require("./app/js/db.js"),
+    Promise = require('promise');
 
-app.use(bodyParser.urlencoded({
+    app.use(bodyParser.urlencoded({
     extended: true
-}));
+    }));
 
 app.use(bodyParser.json());
 
 app.use(express.static('./'));
+
+
 
 app.get('/', function(req, res) {
     res.sendFile(view + 'home.html');
@@ -25,6 +29,41 @@ app.get('/', function(req, res) {
 
 .get('/foodList', function(req, res) {
     res.sendFile(view + 'foodList.html');
+})
+
+.post('/connexion', function (req,res) {
+    //init var
+    var user = req.body.username;
+    var pw = req.body.pw;
+
+    //creating userManager Object
+    if(! userManager){
+        var userManager = new db.userManager();
+    }
+
+    userManager.userExist(req.body.username, function (results) {
+
+        if(! results){
+            console.log("User doesn't exist");
+            res.end("User doesn't exist");
+        }
+        else{
+            userManager.connection(user, pw, function (connected) {
+                if(! connected){
+                    console.log("Wrong PassWord");
+                    res.end("Wrong PassWord");
+                }
+                else{
+                    //sending if connected or not
+                    res.end("true");
+                }
+            });
+
+
+        }
+
+    });
+
 });
 
 app.post('/sendMail', function(req, res) {
