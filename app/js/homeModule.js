@@ -3,18 +3,44 @@
  */
 (function () {
 
-    angular.module('myApp', ['ngRoute'])
+    angular.module('myApp', ['ngRoute','ui.router'])
 
-    .config(function ($routeProvider){
+    .config(function ($routeProvider, $stateProvider){
         $routeProvider
             .when('/', {
-                templateUrl : '/app/templates/home.html',
                 controller  : 'HomeController'
+            })
+            .when('/signIn', {
+                templateUrl : 'app/templates/signin.html',
+                controller  : 'SigninController'
+            })
+
+            .when('/subscribe', {
+                templateUrl : 'app/templates/subscribe.html',
+                controller  : 'SubscribeController'
             })
 
             .when('/foodList', {
-                templateUrl: 'templates/foodList.html',
+                templateUrl: 'app/templates/foodList.html',
                 controller: 'ListController'
-        })
+            })
+
+            .when('/foodList/:user?', {
+                templateUrl: 'app/templates/foodList.html',
+                controller: 'ListController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
+        /*$stateProvider
+            .state('state1', {
+                url: "/foodList",
+                templateUrl: "app/templates/foodList.html",
+                controller: function($scope) {
+                    alert('caca');
+                    $scope.message = "caca";
+                    $scope.foodList= ["A", "List", "Of", "Items"];
+                }
+            })*/
     })
 })();

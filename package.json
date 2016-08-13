@@ -6,6 +6,7 @@
   "dependencies": {
     "express": "^4.13.4",
     "nodemailer": "^2.4.2",
+    "promise": "^7.1.1",
     "sms-sending": "0.0.4"
   },
   "devDependencies": {},

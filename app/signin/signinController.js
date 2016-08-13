@@ -20,19 +20,14 @@
                 }
             }).then(function successCallback(response) {
                 if(response.data == "true"){
-                    $http.post('/user', {user : user})
-                        .then(
-                            function(response){
-                                // success callback
-                                console.log('user saved in server')
-                            },
-                            function(response){
-                                // failure callback
-                                console.log('error saving the user')
-                            }
-                        );
-                    //accessing to the user's list
-                    $location.path("/foodList");
+                    // window.location = '/foodList';
+                    changePage("foodList", "ListController");
+                    /*$http({
+                        method: 'GET',
+                        url: '/userInfo/'+user
+                    }).then(function (rep) {
+                        $scope.error = rep.user;
+                    });*/
                 }
                 else{
                     $scope.error = response.data;
@@ -42,6 +37,14 @@
             });
 
         };
+
+        function changePage(srcPage, controller) {
+            $scope.include = "app/templates/"+srcPage+".html";
+            $scope.controller = controller;
+        }
+
+        $scope.include = "app/templates/signin.html";
+        $scope.controller = "SigninController";
 
         $scope.formData = {};
         $scope.formData2 = {};

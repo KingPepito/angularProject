@@ -9,17 +9,39 @@ var http = require('http'),
     path = require('path'),
     view = __dirname+'/app/templates/',
     bodyParser = require("body-parser"),
-    nodeMailer = require("./app/js/nodeMailer.js"),
+    mailLibs = require("./app/js/mailer.js"),
     db = require("./app/js/db.js"),
-    Promise = require('promise');
+    dbList = require("./app/js/dbList.js"),
+    Promise = require('promise'),
+    when = require('when'),
+    session = require('cookie-session');
 
-    app.use(bodyParser.urlencoded({
+//object managing db user 
+var userManager = new db.userManager();
+//object managing the lists
+var listManager = new dbList.listManager();
+
+
+
+app.use(bodyParser.urlencoded({
     extended: true
-    }));
+}));
 
-app.use(bodyParser.json());
+/* On utilise les sessions*/
+app.use(session({secret: 'secretpw'}))
 
-app.use(express.static('./'));
+/* S'il n'y a pas d'user dans la session,
+ on en crée une vide sous forme d'array avant la suite*/
+    .use(function(req, res, next){
+        if (typeof(req.session.user) == 'undefined') {
+            req.session.user = [];
+        }
+        next();
+    })
+
+    .use(bodyParser.json())
+
+    .use(express.static('./'));
 
 
 
@@ -27,44 +49,129 @@ app.get('/', function(req, res) {
     res.sendFile(view + 'home.html');
 })
 
-.get('/foodList', function(req, res) {
-    res.sendFile(view + 'foodList.html');
+    //a voir pour le retour d'objet user
+    /*.get('/foodList', function(req, res) {
+        console.log("user session"+req.session.user);
+        res.sendFile(view + 'foodList.html');
+    })*/
+    .get('/user', function (req, res) {
+        res.send({user: req.session.user});
+        res.end();
+    })
+
+    //enregistrement de session user
+    .post('/user', function(req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        console.log(req.body.user+" connected");
+        //req.session.user = req.body.user;
+        //req.session.userId = db.getIdUser();
+        res.end();
 })
+    
+    .get('/list', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        listManager.findList(req.session.user._id).then(function (response) {
+            console.log('check this list '+response);
+            res.send(response);
+            res.end();
+        });
+        //listManager.findList(req.session.user);
+    })
+    
+    .post('/newList', function (req, res) {
+        console.log("id:"+req.session.user._id);
+        listManager.newList(req.body.name, req.session.user._id).then(function (response) {
+            res.send(response);
+            res.end();
+        });
+    })
+    
+    .get('/signin', function (req, res) {
+        res.sendFile(view + 'subscribe.html')
+    })
 
-.post('/connexion', function (req,res) {
-    //init var
-    var user = req.body.username;
-    var pw = req.body.pw;
+    .get('/deleteAllUsers', function (req, res) {
+        userManager.rmAll();
+        console.log("Users deleted");
+        res.end();
+    })
 
-    //creating userManager Object
-    if(! userManager){
-        var userManager = new db.userManager();
-    }
+    .post('/subscribe', function (req,res) {
+        console.log("subscribing : %s, %s, %s", req.body.username, req.body.pw, req.body.email);
 
-    userManager.userExist(req.body.username, function (results) {
+        //var mailManager;
 
-        if(! results){
-            console.log("User doesn't exist");
-            res.end("User doesn't exist");
-        }
-        else{
-            userManager.connection(user, pw, function (connected) {
-                if(! connected){
-                    console.log("Wrong PassWord");
-                    res.end("Wrong PassWord");
-                }
-                else{
-                    //sending if connected or not
-                    res.end("true");
-                }
+        var user = req.body.username;
+        var pw = req.body.pw;
+        var email = req.body.email;
+
+
+        if(! userManager){
+            var userManager = new db.userManager();
+            mailLibs.newMailer().then(function (mailManager) {
+
+                userManager.userExist(user,function (isExist) {
+                    if(isExist == false){
+                        userManager.addUser(user, pw, email);
+                        mailManager.sendMail();
+                    }
+                    else{
+                        console.log('User already exists')
+                    }
+                });
             });
-
-
         }
+        else {
+            mailLibs.newMailer().then(function (mailManager) {
+                userManager.userExist(user,function (isExist) {
+                    if(isExist == false){
+                        userManager.addUser(user, pw, email);
+                        mailManager.sendMail();
+                    }
+                    else{
+                        console.log('User already exists')
+                    }
+                });
+            });
+        }
+
+    })
+
+    .post('/connexion', function (req,res) {
+        //init var
+        var user = req.body.username;
+        var pw = req.body.pw;
+
+        //creating userManager Object
+        if(! userManager){
+            var userManager = new db.userManager();
+        }
+
+        userManager.userExist(req.body.username, function (results) {
+
+            if(! results){
+                console.log("User doesn't exist");
+                res.end("User doesn't exist");
+            }
+            else{
+                userManager.connection(user, pw, function (connected, userProfile) {
+                    if(! connected){
+                        console.log("Wrong PassWord");
+                        res.end("Wrong PassWord");
+                    }
+                    else{
+                        //saving user profile TODO:redirection --> post /user
+                        req.session.user = userProfile;
+                        //sending if connected or not
+                        res.end("true");
+                    }
+                });
+
+            }
+
+        });
 
     });
-
-});
 
 app.post('/sendMail', function(req, res) {
 

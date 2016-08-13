@@ -7,26 +7,27 @@
     <script src="/app/js/homeModule.js"></script>
     <script src="/app/js/homeController.js"></script>
     <script src="/app/js/signinController.js"></script>
-    <script src="/app/js/subscribeController.js"></script>
-    <script src="/app/js/listController.js"></script>
-    <script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+
     <script src="/node_modules/angular-route/angular-route.js"></script>
     <base href="/" />
 </head>
-<body ng-app = "myApp" ng-controller = "HomeController">
+<body ng-app = "myApp" ng-controller = "SigninController">
 
     <h1>Welcome !</h1>
 
-    <h2>Here is a simple tool that will help you managing shared lists!</h2>
+    <h2>Here is a simple tool that will help you to do not waste food !</h2>
 
     <div>
-        Please <button ng-click="signIn()">sign in</button> or <button ng-click="subscribe()">subscribe</button> to access your personal list
+        Please sign in or subscribe to access your personal list
     </div>
 
     {{include}}
     {{controller}}
 
-    <ng-view></ng-view>
+    <!-- main -->
+    <main ui-view></main>
+
+    <ng-include src="include"></ng-include>
 
 </body>
 </html>

@@ -3,7 +3,9 @@
  */
 //importing mongoose
 var mongoose = require('mongoose');
-
+var when = require('when');
+exports.dbList = require("./dbList.js");
+    
 //connection to MongoDb
 mongoose.connect('mongodb://localhost/appFoodList', function(err) {
     if (err) { throw err; }
@@ -22,7 +24,8 @@ exports.userManager = function () {
         pseudo : { type : String, match: /^[a-zA-Z0-9-_]+$/ },
         mdp : { type : String, match: /^[a-zA-Z0-9-_]+$/ },
         dateSubcribe: { type : Date, default : Date.now },
-        email: String
+        email: { type : String},
+        activated: { type : Boolean}
     });
 
     //creating the model
@@ -46,10 +49,10 @@ exports.userManager = function () {
             if (err) { throw err; }
             // comms est un tableau de hash
             console.log(res);
-            if("res"+res[1] != null){
+            if(res[1] != null){
                 console.log('SuperUser already exist')
             }
-            else if("res"+res[0] == null){
+            else if(res[0] == null){
                 superUser.save();
             }
         });
@@ -58,11 +61,22 @@ exports.userManager = function () {
 
 
     //function to add an user
-    this.addUser = function (UserPseudo, UserPW, Usermail) {
+    this.addUser = function (UserPseudo, UserPW, Usermail, UserActivated) {
+
+        var UserActivated = typeof UserActivated!== 'undefined' ? UserActivated : false;
+
         var newUser = new UserModel({
             pseudo : UserPseudo,
             mdp: UserPW,
-            email: Usermail});
+            email: Usermail,
+            activated: UserActivated
+        });
+
+        UserModel.find({pseudo: UserPseudo}, function (err, res) {
+            if (err) { throw err; }
+            //log the new user
+            console.log(res);
+        });
 
         newUser.save();
     };
@@ -72,6 +86,13 @@ exports.userManager = function () {
         UserModel.remove({ pseudo : UserPseudo }, function (err) {
             if (err) { throw err; }
             console.log('Commentaires avec pseudo '+UserPseudo+' supprimés !');
+        });
+    };
+
+    this.rmAll = function () {
+        UserModel.remove(function(err,removed) {
+            console.log("removing "+ removed);
+            // where removed is the count of removed documents
         });
     };
 
@@ -114,7 +135,7 @@ exports.userManager = function () {
 
             //sending the reponse if pw is correct
             var isGood = (res[0]['mdp'] == PassWord);
-            callBack(isGood);
+            callBack(isGood, res[0]);
         });
 
     };
