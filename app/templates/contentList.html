@@ -1,0 +1,28 @@
+
+<div>
+
+    {{message}}
+    {{id}}
+    <ul>
+        <li  ng-repeat="element in list track by $index">
+            <button  ng-click="">{{element}}</button>
+        </li>
+    </ul>
+
+    <div ng-hide="contentListView">
+        <form ng-submit="addElementToList(addContent)">
+            <input type="text" ng-model="addContent" placeholder="add element"/>
+            <input type="submit"/>
+        </form>
+    </div>
+
+
+    <div>
+        Menu
+        <button>Edit the list</button>
+        <button ng-click="grant()">Grant an user</button>
+    </div>
+
+    {{error}}
+
+</div>

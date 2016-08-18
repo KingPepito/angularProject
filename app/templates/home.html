@@ -9,19 +9,12 @@
     <script src="/app/js/signinController.js"></script>
     <script src="/app/js/subscribeController.js"></script>
     <script src="/app/js/listController.js"></script>
+    <script src="/app/js/contentListController.js"></script>
     <script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/node_modules/angular-route/angular-route.js"></script>
     <base href="/" />
 </head>
 <body ng-app = "myApp" ng-controller = "HomeController">
-
-    <h1>Welcome !</h1>
-
-    <h2>Here is a simple tool that will help you managing shared lists!</h2>
-
-    <div>
-        Please <button ng-click="signIn()">sign in</button> or <button ng-click="subscribe()">subscribe</button> to access your personal list
-    </div>
 
     {{include}}
     {{controller}}

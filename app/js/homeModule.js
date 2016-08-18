@@ -8,6 +8,7 @@
     .config(function ($routeProvider, $stateProvider){
         $routeProvider
             .when('/', {
+                templateUrl : 'app/templates/welcome.html',
                 controller  : 'HomeController'
             })
             .when('/signIn', {
@@ -29,11 +30,15 @@
                 templateUrl: 'app/templates/foodList.html',
                 controller: 'ListController'
             })
+            .when('/contentList/:id?', {
+                templateUrl: 'app/templates/contentList.html',
+                controller: 'ContentListController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
         /*$stateProvider
-            .state('state1', {
+            .state('newlist', {
                 url: "/foodList",
                 templateUrl: "app/templates/foodList.html",
                 controller: function($scope) {
@@ -42,5 +47,10 @@
                     $scope.foodList= ["A", "List", "Of", "Items"];
                 }
             })*/
-    })
+    });
+
+    angular.module("myApp").factory("listService",function(){
+        return {};
+    });
+
 })();

@@ -77,7 +77,7 @@ exports.listManager = function () {
 
     };
     
-    this.findList = function (user) {
+    this.findListByUser = function (user) {
         var deffered = when.defer();
         console.log("user:"+user);
         //content
@@ -86,6 +86,40 @@ exports.listManager = function () {
             // comms est un tableau de hash
             console.log(res);
             deffered.resolve(res);
+        });
+
+        return deffered.promise;
+    };
+
+    //TODO: use findOne instead of find
+    this.findListById = function (idList) {
+        var deffered = when.defer();
+        console.log("idlist:"+idList);
+        //content
+        ListModel.find({_id : idList}, function (err, res) {
+            if (err) { throw err; }
+            // comms est un tableau de hash
+            console.log("content"+res);
+            deffered.resolve(res);
+        });
+
+        return deffered.promise;
+    };
+
+    this.addElementToList = function (element, idList) {
+        var deffered = when.defer();
+
+        ListModel.findOne({_id: idList}, function (err, list) {
+            list.content.push(element);
+
+            list.save(function (err) {
+                if(err) {
+                    console.error('ERROR!');
+                }
+                else {
+                    deffered.resolve(true);
+                }
+            });
         });
 
         return deffered.promise;

@@ -4,30 +4,34 @@
 (function () {
 
 
-    function ListController($scope, $http, $interval, $location,$routeParams) {
+    function ListController($scope, $http, $interval, $location,$routeParams,listService) {
 
         var user;
+
+        //variable partagé avec le service 'list'
+        $scope.list = listService;
 
         $http.get('/user')
             .then(function (res) {
                 user = res;
                 console.log(res);
-                $scope.message = "Bonjour "+res.data.user.pseudo+"!";
+                $scope.message = "Hi "+res.data.user.pseudo+"!";
             });
 
-        var refreshList = function(){
+        //refreshing the content of the lists
+        var refreshUserLists = function(){
             $scope.listList = [];
             $http.get('/list')
                 .then(function (res) {
                     console.log(res.data);
-
+                    //showing the lists the user can access in
                     res.data.forEach( function (element) {
-                        $scope.fillList(element.name);
+                        $scope.fillList(element);
                     });
                 });
         };
 
-
+        //refreshing the view of the lists
         $scope.fillList = function(item){
             console.log(item);
             //synchro for the view
@@ -36,21 +40,49 @@
             $scope.item = null;
         };
 
+        //showing the form for a new list
+        $scope.newListShow = function (name) {
+            $scope.newListView = false;
+        };
+
+        //showing the form for a new list
+        $scope.searchListHide = function (name) {
+            $scope.searchListView = true;
+        };
+
+        //creat a new list for the current user
         $scope.newList = function (name) {
+
             $http.post('/newlist', {name: name})
                 .then(
                     function (res) {
                         console.log(res);
-                        refreshList();
+                        refreshUserLists();
                     })
                 .then(function (err) {
                     console.log(err)
                 })
         };
 
-        refreshList();
-    }
+        //show the content of a list
+        $scope.showList = function (selectedList) {
+            $scope.list.currentList = selectedList;
+            $location.path("/contentList");
+        };
 
+        //search a list name
+        $scope.searchList = function () {
+
+        };
+
+        //the newlist view is hidded by default
+        $scope.newListView = true;
+        //the field for search the list is showed byu default
+        $scope.searchListView = false;
+
+        refreshUserLists();
+    }
+    //TODO:jhonpapa function tri
     angular.module('myApp').controller("ListController", ListController);
 
 })();

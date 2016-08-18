@@ -35,6 +35,7 @@ app.use(session({secret: 'secretpw'}))
     .use(function(req, res, next){
         if (typeof(req.session.user) == 'undefined') {
             req.session.user = [];
+            req.session.list = [];
         }
         next();
     })
@@ -63,21 +64,18 @@ app.get('/', function(req, res) {
     .post('/user', function(req, res) {
         res.setHeader('Content-Type', 'application/json');
         console.log(req.body.user+" connected");
-        //req.session.user = req.body.user;
-        //req.session.userId = db.getIdUser();
         res.end();
 })
-    
+    //getting the lists of an user
     .get('/list', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
-        listManager.findList(req.session.user._id).then(function (response) {
+        listManager.findListByUser(req.session.user._id).then(function (response) {
             console.log('check this list '+response);
             res.send(response);
             res.end();
         });
-        //listManager.findList(req.session.user);
     })
-    
+
     .post('/newList', function (req, res) {
         console.log("id:"+req.session.user._id);
         listManager.newList(req.body.name, req.session.user._id).then(function (response) {
@@ -85,11 +83,48 @@ app.get('/', function(req, res) {
             res.end();
         });
     })
-    
-    .get('/signin', function (req, res) {
-        res.sendFile(view + 'subscribe.html')
-    })
 
+    //TODO:message inscription réussie
+    .get('/getListContent/:idList', function (req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        console.log('le param id list: '+req.params.idList);
+
+        if(req.params.idList == "lastList"){
+            listManager.findListById(req.session.list).then(function (response) {
+                    res.send({list : response[0]});
+                    res.end();
+                },
+                function (err) {
+                    console.log("error");
+                });
+        }
+        else{
+            //finding the list content
+            listManager.findListById(req.params.idList).then(function (response) {
+                    console.log("list refreshed");
+                    //saving the last list if the page is refreshed
+                    req.session.list = req.params.idList;
+                    res.send({list : response[0]});
+                    res.end();
+                },
+                function (err) {
+                    console.log("error");
+                });
+        }
+    })
+    
+    .post('/addElementToList', function (req,res) {
+        console.log("element: "+req.body.newElement);
+        console.log("list: "+req.body.idList);
+        listManager.addElementToList(req.body.newElement, req.body.idList)/*.then(function () {
+            res.send(true);
+        })
+            .then(function () {
+                res.send(false);
+            })*/;
+        res.end();
+    })
+    
     .get('/deleteAllUsers', function (req, res) {
         userManager.rmAll();
         console.log("Users deleted");

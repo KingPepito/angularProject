@@ -3,16 +3,23 @@
 
     {{message}}
 
-    <form ng-submit="fillList(item)" ng-model="listForm">
-        <input type="text" ng-model="item"/>
+    <form ng-submit="searchList(item)" ng-model="listForm" ng-hide="searchListView">
+        <input type="text" ng-model="item" placeholder="search a list"/>
         <input type="submit"/>
     </form>
 
     <ul>
-        <li  ng-repeat="product in listList track by $index">
-            {{product}}
+        <li  ng-repeat="list in listList track by $index">
+            <button  ng-click="showList(list)">{{list.name}}</button>
         </li>
     </ul>
 
-    <button ng-click="newList('creation')">New list</button>
+    <!--<div ng-hide="contentListView">-->
+        <!--<form ng-submit="fillList"></form>-->
+        <!--<input type="text" ng-model="addContent" placeholder="add element"/>-->
+        <!--<input type="submit"/>-->
+    <!--</div>-->
+
+        <button ng-click="newListShow()">New list</button>
+        <div ng-include="'app/templates/newList.html'" ng-hide="newListView"></div>
 </div>
