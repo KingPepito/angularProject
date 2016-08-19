@@ -9,6 +9,14 @@
 
     function ContentListController($scope, $http, $interval, $location,$routeParams,listService) {
 
+        var checkConnect = function () {
+            $http.get('/user').then(function (res) {
+                if(res.data.user == ""){
+                    $location.path('/');
+                }
+            })
+        }();
+
         var idList;
 
         //test to manage if the user refresh the page
@@ -53,9 +61,9 @@
 
         //add an element to a list
         $scope.addElementToList = function (element) {
-            $http.post('/addElementToList',{newElement:element, idList:list._id}).
+            $http.post('/addElementToList',{newElement:element, idList:idList}).
                 then(function (res) {
-                list = res.data.list;
+                $scope.list = res.data.list;
                 console.log(res);
                 refreshList();
             },      function (err) {

@@ -9,9 +9,9 @@ var http = require('http'),
     path = require('path'),
     view = __dirname+'/app/templates/',
     bodyParser = require("body-parser"),
-    mailLibs = require("./app/js/mailer.js"),
-    db = require("./app/js/db.js"),
-    dbList = require("./app/js/dbList.js"),
+    mailLibs = require("./toolsServeur/mailer.js"),
+    db = require("./toolsServeur/db.js"),
+    dbList = require("./toolsServeur/dbList.js"),
     Promise = require('promise'),
     when = require('when'),
     session = require('cookie-session');
@@ -140,36 +140,19 @@ app.get('/', function(req, res) {
         var pw = req.body.pw;
         var email = req.body.email;
 
-
-        if(! userManager){
-            var userManager = new db.userManager();
-            mailLibs.newMailer().then(function (mailManager) {
-
-                userManager.userExist(user,function (isExist) {
-                    if(isExist == false){
-                        userManager.addUser(user, pw, email);
-                        mailManager.sendMail();
-                    }
-                    else{
-                        console.log('User already exists')
-                    }
-                });
-            });
-        }
-        else {
             mailLibs.newMailer().then(function (mailManager) {
                 userManager.userExist(user,function (isExist) {
                     if(isExist == false){
                         userManager.addUser(user, pw, email);
                         mailManager.sendMail();
+                        res.end("User "+user+" succefully created");
                     }
                     else{
-                        console.log('User already exists')
+                        console.log('User already exists');
+                        res.status(500).send("User "+user+" already exists!");
                     }
                 });
             });
-        }
-
     })
 
     .post('/connexion', function (req,res) {
@@ -206,8 +189,12 @@ app.get('/', function(req, res) {
 
         });
 
-    });
+    })
 
+    .get('/deconnexion', function (req,res) {
+        req.session.user = "";
+        res.end()
+    });
 app.post('/sendMail', function(req, res) {
 
     //log the data

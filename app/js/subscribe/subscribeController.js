@@ -20,9 +20,11 @@
                             email : email
                         }
                     }).then(function successCallback(response) {
-
+                        console.log("subscribe success");
+                        $scope.message = response;
                     }, function errorCallback(response) {
-                        console.log("erreur inscription "+ response.data)
+                        console.log("erreur inscription "+ response.data);
+                        $scope.message = response.data;
                     });
 
                     $scope.error = "";

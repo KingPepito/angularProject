@@ -1,18 +1,24 @@
+<div>
+
     <h2>Subscribe</h2>
     <h2>Please enter your information here :</h2>
     <form ng-submit="subscribe(idUser, password, email)">
         <p>Identifiant</p>
         <input type="text" ng-model="idUser">
-
         <p>Password</p>
         <input type="password" ng-model="password">
-
         <p>Password again</p>
         <input type="password" ng-model="password2">
-
         <p>E-mail</p>
         <input type="email" ng-model="email">
-
         <p><input type="submit"></p>
     </form>
+    {{message}}
     {{error}}
+
+</div>
+
+
+
+
+

@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <title>Welcome</title>
     <script src="/bower_components/angular/angular.js"></script>
-    <script src="/app/js/homeModule.js"></script>
-    <script src="/app/js/homeController.js"></script>
-    <script src="/app/js/signinController.js"></script>
-    <script src="/app/js/subscribeController.js"></script>
-    <script src="/app/js/listController.js"></script>
-    <script src="/app/js/contentListController.js"></script>
+    <script src="/app/js/app/homeModule.js"></script>
+    <script src="/app/js/app/homeController.js"></script>
+    <script src="/app/js/signin/signinController.js"></script>
+    <script src="/app/js/subscribe/subscribeController.js"></script>
+    <script src="/app/js/listsUser/listController.js"></script>
+    <script src="/app/js/listContent/contentListController.js"></script>
     <script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/node_modules/angular-route/angular-route.js"></script>
     <base href="/" />
 </head>
 <body ng-app = "myApp" ng-controller = "HomeController">
 
-    {{include}}
-    {{controller}}
 
     <ng-view></ng-view>
+
+    <button ng-click="goHome(false, '/foodList')">Homepage</button>
+    <button ng-click="goHome(true, '/')">Deconnect</button>
 
 </body>
 </html>

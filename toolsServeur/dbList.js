@@ -1,9 +1,6 @@
 /**
  * Created by Antoine Chan on 10/08/2016.
  */
-/**
- * Created by Antoine Chan on 22/06/2016.
- */
 
 //importing mongoose
 var mongoose = require('mongoose');
@@ -76,7 +73,7 @@ exports.listManager = function () {
         return deffered.promise;
 
     };
-    
+    //TODO: parameter without content
     this.findListByUser = function (user) {
         var deffered = when.defer();
         console.log("user:"+user);
@@ -108,7 +105,7 @@ exports.listManager = function () {
 
     this.addElementToList = function (element, idList) {
         var deffered = when.defer();
-
+        
         ListModel.findOne({_id: idList}, function (err, list) {
             list.content.push(element);
 

@@ -8,6 +8,14 @@
 
         var user;
 
+        var checkConnect = function () {
+            $http.get('/user').then(function (res) {
+                if(res.data.user == ""){
+                    $location.path('/');
+                }
+            })
+        }();
+
         //variable partagé avec le service 'list'
         $scope.list = listService;
 
