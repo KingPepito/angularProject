@@ -137,8 +137,22 @@ exports.userManager = function () {
             var isGood = (res[0]['mdp'] == PassWord);
             callBack(isGood, res[0]);
         });
-
     };
+
+    this.findUser = function (userPseudo) {
+        var deffered = when.defer();
+
+        UserModel.findOne({pseudo: userPseudo}, function (err, user) {
+            if(user == null){
+                deffered.reject("The user your looking for doesn't exist");
+            }
+            else{
+                deffered.resolve(user);
+            }
+        });
+
+        return deffered.promise;
+    }
 };
 
 

@@ -20,7 +20,10 @@
     <div>
         Menu
         <button>Edit the list</button>
-        <button ng-click="grant()">Grant an user</button>
+        <form ng-submit="grantUser(userToGrant)">
+            <input ng-model="userToGrant" placeholder="grant an user">
+            <input type="submit" >
+        </form>
     </div>
 
     {{error}}

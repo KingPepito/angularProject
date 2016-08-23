@@ -21,8 +21,6 @@ var userManager = new db.userManager();
 //object managing the lists
 var listManager = new dbList.listManager();
 
-
-
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -50,11 +48,6 @@ app.get('/', function(req, res) {
     res.sendFile(view + 'home.html');
 })
 
-    //a voir pour le retour d'objet user
-    /*.get('/foodList', function(req, res) {
-        console.log("user session"+req.session.user);
-        res.sendFile(view + 'foodList.html');
-    })*/
     .get('/user', function (req, res) {
         res.send({user: req.session.user});
         res.end();
@@ -194,6 +187,35 @@ app.get('/', function(req, res) {
     .get('/deconnexion', function (req,res) {
         req.session.user = "";
         res.end()
+    })
+
+    .post('/grant',function (req, res) {
+        console.log("User granted "+req.body.pseudoUser);
+        console.log("List granted "+req.body.idList);
+
+        var idUser;
+
+        userManager.findUser(req.body.pseudoUser)
+            .then(function (ans) {
+                    console.log('USER:'+ans.pseudo);
+                    idUser = ans._id;
+                },
+                function (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                })
+            .then(function(){
+                listManager.grantUser(idUser, req.body.idList)
+                    .then(
+                        function (response) {
+                            res.end("The user "+req.body.pseudoUser+" is now allowed to modify the list");
+                        },
+                        function (err) {
+                            res.status(500).send(err);
+                        });
+            });
+        // 
+        //res.end();
     });
 app.post('/sendMail', function(req, res) {
 

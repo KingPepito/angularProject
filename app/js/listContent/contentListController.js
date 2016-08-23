@@ -71,6 +71,18 @@
                 $scope.error = "An error occured please try again later"
             })
         };
+        
+        $scope.grantUser = function (user) {
+            $http.post('/grant',{pseudoUser:user, idList:listService._id}).
+                then(function (res) {
+                    console.log(res);
+                    $scope.userToGrant = "";
+                    $scope.error = res.data;
+            }, function (err) {
+                $scope.error = err.data;
+                //$scope.userToGrant = "";
+            })
+        };
 
         $scope.list = [];
 

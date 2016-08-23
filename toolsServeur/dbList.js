@@ -121,6 +121,26 @@ exports.listManager = function () {
 
         return deffered.promise;
     };
+    
+    this.grantUser = function (idUser, idList) {
+        var deffered = when.defer();
+
+        ListModel.findOne({_id: idList}, function (err, list) {
+            list.usersAllowed.push(idUser);
+
+            list.save(function (err) {
+                if(err) {
+                    console.error('ERROR!');
+                    deffered.reject("An error occured while updating the user's right please try again later")
+                }
+                else {
+                    deffered.resolve();
+                }
+            });
+        });
+
+        return deffered.promise;
+    }
 };
 
 
