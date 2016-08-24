@@ -19,19 +19,6 @@
 
         var idList;
 
-        //test to manage if the user refresh the page
-        var isCurrentList = function () {
-            return(listService.currentList != undefined)
-        };
-
-        if(isCurrentList()){
-            //the field for search the list is showed by default
-            idList = listService.currentList._id;
-        }
-        else{
-            idList = "lastList";
-        }
-
         //refreshing the content of the lists
         var refreshList = function(){
             $scope.addContent = "";
@@ -49,6 +36,24 @@
                 });
             });
         };
+
+        //test to manage if the user refresh the page
+        var isCurrentList = function () {
+            return(listService.currentList != undefined)
+        };
+
+        if(isCurrentList()){
+            //the field for search the list is showed by default
+            idList = listService.currentList._id;
+            refreshList();
+        }
+        else{
+            $http.get("/getLastList").then(function (res) {
+                idList = res.data;
+                console.log(res.data);
+                refreshList();
+            })
+        }
 
         //refreshing the view of the lists
         $scope.fillList = function(item){
@@ -71,6 +76,18 @@
                 $scope.error = "An error occured please try again later"
             })
         };
+
+        //add an element to a list
+        $scope.deleteElementFromList = function (element) {
+            console.log("id list deleting"+idList);
+            $http.post('/deleteElementFromList', {elementIndex:element, idList:idList})
+                .then(
+                    function (res) {
+                        refreshList();
+                    }, function (err) {
+                        $scope.error = "An error occured while deleting this item, please try later"
+                    })
+        };
         
         $scope.grantUser = function (user) {
             $http.post('/grant',{pseudoUser:user, idList:listService._id}).
@@ -86,7 +103,6 @@
 
         $scope.list = [];
 
-        refreshList();
     }
     //TODO:jhonpapa function tri
     angular.module('myApp').controller("ContentListController", ContentListController);

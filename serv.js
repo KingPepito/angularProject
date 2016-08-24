@@ -77,6 +77,11 @@ app.get('/', function(req, res) {
         });
     })
 
+    //return the last list Id (using if the app is refreshed)
+    .get('/getLastList', function (req, res) {
+        res.end(req.session.list);
+    })
+
     //TODO:message inscription réussie
     .get('/getListContent/:idList', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
@@ -109,6 +114,9 @@ app.get('/', function(req, res) {
     .post('/addElementToList', function (req,res) {
         console.log("element: "+req.body.newElement);
         console.log("list: "+req.body.idList);
+        
+        if(req.body.idList)
+        
         listManager.addElementToList(req.body.newElement, req.body.idList)/*.then(function () {
             res.send(true);
         })
@@ -117,7 +125,19 @@ app.get('/', function(req, res) {
             })*/;
         res.end();
     })
-    
+
+    .post('/deleteElementFromList', function (req,res) {
+        console.log("element: "+req.body.elementIndex);
+        console.log("list: "+req.body.idList);
+        listManager.deleteElementFromList(req.body.elementIndex, req.body.idList).then(
+            function (response) {
+                res.end();
+        },
+            function (err) {
+                res.status(500).send(err)
+            });
+    })
+
     .get('/deleteAllUsers', function (req, res) {
         userManager.rmAll();
         console.log("Users deleted");

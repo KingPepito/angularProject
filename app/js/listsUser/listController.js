@@ -22,7 +22,6 @@
         $http.get('/user')
             .then(function (res) {
                 user = res;
-                console.log(res);
                 $scope.message = "Hi "+res.data.user.pseudo+"!";
             });
 
@@ -31,7 +30,6 @@
             $scope.listList = [];
             $http.get('/list')
                 .then(function (res) {
-                    console.log(res.data);
                     //showing the lists the user can access in
                     res.data.forEach( function (element) {
                         $scope.fillList(element);
@@ -41,7 +39,6 @@
 
         //refreshing the view of the lists
         $scope.fillList = function(item){
-            console.log(item);
             //synchro for the view
             $scope.listList.push(item);
             //clearing the input
@@ -58,14 +55,14 @@
             $scope.searchListView = true;
         };
 
-        //creat a new list for the current user
+        //create a new list for the current user
         $scope.newList = function (name) {
 
             $http.post('/newlist', {name: name})
                 .then(
                     function (res) {
-                        console.log(res);
                         refreshUserLists();
+                        $scope.listName = "";
                     })
                 .then(function (err) {
                     console.log(err)
@@ -85,7 +82,7 @@
 
         //the newlist view is hidded by default
         $scope.newListView = true;
-        //the field for search the list is showed byu default
+        //the field for search the list is showed by default
         $scope.searchListView = false;
 
         refreshUserLists();

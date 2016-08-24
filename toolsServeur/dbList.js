@@ -121,7 +121,26 @@ exports.listManager = function () {
 
         return deffered.promise;
     };
-    
+
+    this.deleteElementFromList = function (element, idList) {
+        var deffered = when.defer();
+
+        ListModel.findOne({_id: idList}, function (err, list) {
+            list.content.splice(element, 1);
+
+            list.save(function (err) {
+                if(err) {
+                    console.error('ERROR!');
+                }
+                else {
+                    deffered.resolve(true);
+                }
+            });
+        });
+
+        return deffered.promise;
+    };
+
     this.grantUser = function (idUser, idList) {
         var deffered = when.defer();
 

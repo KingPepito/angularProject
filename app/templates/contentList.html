@@ -5,7 +5,7 @@
     {{id}}
     <ul>
         <li  ng-repeat="element in list track by $index">
-            <button  ng-click="">{{element}}</button>
+            <span><p ng-click="">{{element}}</p> <button ng-click="deleteElementFromList($index)">X</button></span>
         </li>
     </ul>
 
