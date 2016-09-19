@@ -1,8 +1,7 @@
 /**
  * Created by Antoine Chan on 02/08/2016.
  */
-//importing mongoose
-var nodeMailer = require('nodeMailer');
+
 var when = require('when');
 
 exports.newMailer = function () {

@@ -269,7 +269,7 @@ app.get('/', function(req, res) {
 
 
 //TODO: mail de verification
-app.post('/sendMail', function(req, res) {
+/*app.post('/sendMail', function(req, res) {
 
     //log the data
     console.log("mail :"+req.body.mail
@@ -301,8 +301,8 @@ app.post('/sendMail', function(req, res) {
                 console.log('Message pending: ' + info.pending );
             }
         });
-    }/**/
-});
+    }
+});*/
 
 var server = app.listen(1337);
 
