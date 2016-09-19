@@ -3,9 +3,9 @@
  */
 (function () {
 
-    angular.module('myApp', ['ngRoute','ui.router'])
+    angular.module('myApp', ['ngRoute'])
 
-    .config(function ($routeProvider, $stateProvider){
+    .config(function ($routeProvider){
         $routeProvider
             .when('/', {
                 templateUrl : 'app/templates/welcome.html',
@@ -37,32 +37,10 @@
             .otherwise({
                 redirectTo: '/'
             });
-        /*$stateProvider
-            .state('newlist', {
-                url: "/foodList",
-                templateUrl: "app/templates/foodList.html",
-                controller: function($scope) {
-                    alert('caca');
-                    $scope.message = "caca";
-                    $scope.foodList= ["A", "List", "Of", "Items"];
-                }
-            })*/
     });
 
     angular.module("myApp").factory("listService",function(){
         return {};
-    });
-
-    //Service to interact with the socket library
-    angular.module("myApp").factory('socket', function (socketFactory) {
-        var myIoSocket = io.connect("http://localhost:1337");
-         /*
-        var socket = socketFactory({
-            ioSocket: myIoSocket
-        });
-
-        return socket;*/
-        return socketFactory;
     });
 
 })();
