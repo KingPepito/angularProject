@@ -7,7 +7,6 @@ var http = require('http'),
     express = require('express'),
     app = express(),
     path = require('path'),
-    view = __dirname+'/app/templates/',
     bodyParser = require("body-parser"),
     mailLibs = require("./toolsServeur/mailer.js"),
     db = require("./toolsServeur/db.js"),
@@ -51,7 +50,7 @@ app.use(session({secret: 'secretpw'}))
 
 
 app.get('/', function(req, res) {
-    res.sendFile(view + 'home.html');
+    res.sendFile(__dirname+'/app/modules/appCore/home.html');
 })
 
 

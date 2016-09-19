@@ -8,30 +8,30 @@
     .config(function ($routeProvider){
         $routeProvider
             .when('/', {
-                templateUrl : 'app/templates/welcome.html',
+                templateUrl : 'app/modules/appCore/welcome.html',
                 controller  : 'HomeController'
             })
             .when('/signIn', {
-                templateUrl : 'app/templates/signin.html',
+                templateUrl : 'app/modules/signin/signin.html',
                 controller  : 'SigninController'
             })
 
             .when('/subscribe', {
-                templateUrl : 'app/templates/subscribe.html',
+                templateUrl : 'app/modules/subscribe/subscribe.html',
                 controller  : 'SubscribeController'
             })
 
             .when('/foodList', {
-                templateUrl: 'app/templates/foodList.html',
+                templateUrl: 'app/modules/listsUser/listsUser.html',
                 controller: 'ListController'
             })
 
             .when('/foodList/:user?', {
-                templateUrl: 'app/templates/foodList.html',
+                templateUrl: 'app/modules/listsUser/listsUser.html',
                 controller: 'ListController'
             })
             .when('/contentList/:id?', {
-                templateUrl: 'app/templates/contentList.html',
+                templateUrl: 'app/modules/listContent/contentList.html',
                 controller: 'ContentListController'
             })
             .otherwise({
