@@ -4,6 +4,7 @@
   "description": "little project to practice angular framework",
   "main": "serv.js",
   "dependencies": {
+    "angular": "^1.5.8",
     "angular-route": "^1.5.8",
     "body-parser": "^1.15.2",
     "cookie-session": "^2.0.0-alpha.1",
