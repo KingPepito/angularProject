@@ -1,9 +1,7 @@
 /**
  * Created by Antoine Chan on 17/08/2016.
  */
-/**
- * Created by Antoine Chan on 20/06/2016.
- */
+
 (function () {
 
 
@@ -19,8 +17,24 @@
 
         var idList;
 
+
+        var socket = io.connect('http://localhost:1337');
+
+        var initializeSocket = function () {
+            socket.on('message', function (message) {
+                alert('Message du server: '+message);
+            });
+
+            socket.on('serverRefresh/'+idList, function (message) {
+                refreshList();
+                $scope.message = message;
+            });
+        };
+
+
         //refreshing the content of the lists
-        var refreshList = function(){
+        //use emiting as True to refresh other user on the same list
+        var refreshList = function(emiting){
             $scope.addContent = "";
             $scope.list = [];
             $http.get('/getListContent/'+idList).then(function (res) {
@@ -28,12 +42,15 @@
                 listService = res.data.list;
 
                 //the field for search the list is showed by default
-                $scope.message = "Here is your list:"+res.data.list.name;
+                $scope.message = "Here is your list: "+res.data.list.name;
 
                 //putting the list content in the $scope
                 res.data.list.content.forEach(function (element) {
                     $scope.fillList(element);
                 });
+                if(emiting == true){
+                    socket.emit('clientRefresh', {idList:idList});
+                }
             });
         };
 
@@ -45,15 +62,19 @@
         if(isCurrentList()){
             //the field for search the list is showed by default
             idList = listService.currentList._id;
+            initializeSocket();
             refreshList();
         }
         else{
             $http.get("/getLastList").then(function (res) {
                 idList = res.data;
                 console.log(res.data);
+                initializeSocket();
                 refreshList();
             })
         }
+
+
 
         //refreshing the view of the lists
         $scope.fillList = function(item){
@@ -66,40 +87,62 @@
 
         //add an element to a list
         $scope.addElementToList = function (element) {
-            $http.post('/addElementToList',{newElement:element, idList:idList}).
+            $http.post('/elementFromList',{newElement:element, idList:idList}).
                 then(function (res) {
                 $scope.list = res.data.list;
                 console.log(res);
-                refreshList();
+                refreshList(true);
             },      function (err) {
                 console.log(err);
                 $scope.error = "An error occured please try again later"
             })
         };
 
-        //add an element to a list
+        //delete an element from a list
         $scope.deleteElementFromList = function (element) {
-            console.log("id list deleting"+idList);
-            $http.post('/deleteElementFromList', {elementIndex:element, idList:idList})
+            $http.delete('/elementFromList/'+idList+'/'+element)
                 .then(
                     function (res) {
-                        refreshList();
+                        refreshList(true);
                     }, function (err) {
                         $scope.error = "An error occured while deleting this item, please try later"
                     })
         };
-        
+
+        //edit an element from a list
+        $scope.editElementFromList = function (element, newValue) {
+            $http.put('/elementFromList/'+idList+'/'+element+'/'+newValue)
+                .then(
+                    function (res) {
+                        $scope.showEdit();
+                        refreshList(true);
+                    }, function (err) {
+                        $scope.error = "An error occured while deleting this item, please try later"
+                    })
+        };
+
+        //allow another user to access the list
         $scope.grantUser = function (user) {
-            $http.post('/grant',{pseudoUser:user, idList:listService._id}).
+            if(user != ""){
+                $http.post('/grant',{pseudoUser:user, idList:listService._id}).
                 then(function (res) {
                     console.log(res);
                     $scope.userToGrant = "";
                     $scope.error = res.data;
-            }, function (err) {
-                $scope.error = err.data;
-                //$scope.userToGrant = "";
-            })
+                }, function (err) {
+                    $scope.error = err.data;
+                    //$scope.userToGrant = "";
+                })
+            }
         };
+
+        $scope.showEdit = function (index) {
+            $scope.viewList = ($scope.editHide == true);
+            $scope.editHide = ($scope.editHide == false);
+            $scope.elementToEdit = index;
+        };
+
+        $scope.editHide = true;
 
         $scope.list = [];
 

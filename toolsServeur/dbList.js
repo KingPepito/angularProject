@@ -73,6 +73,25 @@ exports.listManager = function () {
         return deffered.promise;
 
     };
+
+    this.deleteList = function (idList) {
+        var deffered = when.defer();
+
+        ListModel.remove({_id:idList}, function (err) {
+            if (err) {
+                deffered.reject("Something goes wrong");
+                console.log("Something goes wrong");
+                throw err;
+            }
+               deffered.resolve(true);
+
+        });
+
+
+
+        return deffered.promise;
+    };
+
     //TODO: parameter without content
     this.findListByUser = function (user) {
         var deffered = when.defer();
@@ -136,6 +155,28 @@ exports.listManager = function () {
                     deffered.resolve(true);
                 }
             });
+        });
+
+        return deffered.promise;
+    };
+
+    this.editElementFromList = function (element, idList, newValue) {
+        var deffered = when.defer();
+
+
+
+        ListModel.findOne({_id: idList}, function (err, list) {
+            console.log(list.content[element]);
+            list.content.splice(element,1, newValue);
+            list.save(function (err) {
+                if(err) {
+                    console.error('ERROR!');
+                }
+                else {
+                    deffered.resolve(true);
+                }
+            });
+
         });
 
         return deffered.promise;

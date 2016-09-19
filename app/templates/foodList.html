@@ -1,19 +1,43 @@
 
-<div>
+<div class="container">
 
-    {{message}}
+    <div class="panel panel-default">
+        <div class="panel-heading" style="height: 60px">
+            <form  class="form-inline" ng-model="listForm" ng-hide="searchListView">
+                <h3 class="panel-title form-group">{{message}}</h3>
+                <input class="form-control" style="float: right;" type="text" ng-model="item" placeholder="search a list"/>
+            </form>
+        </div>
+        <div class="panel-body" >
 
-    <form ng-submit="searchList(item)" ng-model="listForm" ng-hide="searchListView">
-        <input type="text" ng-model="item" placeholder="search a list"/>
-        <input type="submit"/>
-    </form>
+            <row>
+                <div class="col-lg-1 col-lg-offset-1 list-icone" ng-repeat="list in listList | filter: {name: item}">
 
-    <ul>
-        <li  ng-repeat="list in listList track by $index">
-            <button  ng-click="showList(list)">{{list.name}}</button>
-        </li>
-    </ul>
+                    <div class="clickable" ng-click="showList(list)">
 
-        <button ng-click="newListShow()">New list</button>
-        <div ng-include="'app/templates/newList.html'" ng-hide="newListView"></div>
+                        <h2 class="text-center"  >{{list.name}}</h2>
+
+                    </div>
+
+                    <button class="col-lg-10 col-lg-offset-1 col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 sticky-btn btn btn-danger" ng-click="deleteList(list._id)">Delete</button>
+
+                </div>
+            </row>
+
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-group col-lg-1 col-lg-offset-5 col-md-offset-5 col-sm-offset-5">
+                        <button class="btn btn-default" ng-click="newListShow()">New list</button>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-md-offset-4 btn" ng-include="'app/templates/newList.html'" ng-hide="newListView"></div>
+
+            </div>
+
+        </div>
+    </div>
+
 </div>

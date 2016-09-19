@@ -14,9 +14,15 @@ var http = require('http'),
     dbList = require("./toolsServeur/dbList.js"),
     Promise = require('promise'),
     when = require('when'),
-    session = require('cookie-session');
+    session = require('cookie-session'),
+    fs = require('fs');
 
-//object managing db user 
+    function handler (req, res) {
+        res.writeHead(200);
+        res.end("<html><script src=\"/socket.io/socket.io.js\"></script><script></html>");
+    }
+
+//object managing db user
 var userManager = new db.userManager();
 //object managing the lists
 var listManager = new dbList.listManager();
@@ -48,6 +54,8 @@ app.get('/', function(req, res) {
     res.sendFile(view + 'home.html');
 })
 
+
+    // PARTIE USER CONNECTE
     .get('/user', function (req, res) {
         res.send({user: req.session.user});
         res.end();
@@ -69,11 +77,21 @@ app.get('/', function(req, res) {
         });
     })
 
-    .post('/newList', function (req, res) {
+    .post('/list', function (req, res) {
         console.log("id:"+req.session.user._id);
         listManager.newList(req.body.name, req.session.user._id).then(function (response) {
             res.send(response);
             res.end();
+        });
+    })
+
+    .delete('/list/:idList', function (req, res) {
+        listManager.deleteList(req.params.idList).then(function (response) {
+            res.send(response);
+            res.end();
+        },
+        function (err) {
+            res.end(err);
         });
     })
 
@@ -82,7 +100,8 @@ app.get('/', function(req, res) {
         res.end(req.session.list);
     })
 
-    //TODO:message inscription réussie
+
+    // PARTIE GESTION CONTENU LIST
     .get('/getListContent/:idList', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
         console.log('le param id list: '+req.params.idList);
@@ -110,13 +129,13 @@ app.get('/', function(req, res) {
                 });
         }
     })
-    
-    .post('/addElementToList', function (req,res) {
+
+    .post('/elementFromList', function (req,res) {
         console.log("element: "+req.body.newElement);
         console.log("list: "+req.body.idList);
-        
+
         if(req.body.idList)
-        
+
         listManager.addElementToList(req.body.newElement, req.body.idList)/*.then(function () {
             res.send(true);
         })
@@ -126,10 +145,8 @@ app.get('/', function(req, res) {
         res.end();
     })
 
-    .post('/deleteElementFromList', function (req,res) {
-        console.log("element: "+req.body.elementIndex);
-        console.log("list: "+req.body.idList);
-        listManager.deleteElementFromList(req.body.elementIndex, req.body.idList).then(
+    .delete('/elementFromList/:idList/:element', function (req,res) {
+        listManager.deleteElementFromList(req.params.element, req.params.idList).then(
             function (response) {
                 res.end();
         },
@@ -138,36 +155,48 @@ app.get('/', function(req, res) {
             });
     })
 
-    .get('/deleteAllUsers', function (req, res) {
-        userManager.rmAll();
-        console.log("Users deleted");
-        res.end();
-    })
-
-    .post('/subscribe', function (req,res) {
-        console.log("subscribing : %s, %s, %s", req.body.username, req.body.pw, req.body.email);
-
-        //var mailManager;
-
-        var user = req.body.username;
-        var pw = req.body.pw;
-        var email = req.body.email;
-
-            mailLibs.newMailer().then(function (mailManager) {
-                userManager.userExist(user,function (isExist) {
-                    if(isExist == false){
-                        userManager.addUser(user, pw, email);
-                        mailManager.sendMail();
-                        res.end("User "+user+" succefully created");
-                    }
-                    else{
-                        console.log('User already exists');
-                        res.status(500).send("User "+user+" already exists!");
-                    }
-                });
+    .put('/elementFromList/:idList/:element/:newValue', function (req,res) {
+        listManager.editElementFromList(req.params.element, req.params.idList, req.params.newValue).then(
+            function (response) {
+                console.log("goodending");
+                res.end();
+        },
+            function (err) {
+                res.status(500).send(err)
             });
     })
 
+    .post('/grant',function (req, res) {
+        console.log("User granted "+req.body.pseudoUser);
+        console.log("List granted "+req.body.idList);
+
+        var idUser;
+
+        userManager.findUser(req.body.pseudoUser)
+            .then(function (ans) {
+                    console.log('USER:'+ans.pseudo);
+                    idUser = ans._id;
+                },
+                function (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                })
+            .then(function(){
+                listManager.grantUser(idUser, req.body.idList)
+                    .then(
+                        function (response) {
+                            res.end("The user "+req.body.pseudoUser+" is now allowed to modify the list");
+                        },
+                        function (err) {
+                            res.status(500).send(err);
+                        });
+            });
+        //
+        //res.end();
+    })
+
+
+    // PARTIE COMPTE UTILISATEUR
     .post('/connexion', function (req,res) {
         //init var
         var user = req.body.username;
@@ -209,34 +238,38 @@ app.get('/', function(req, res) {
         res.end()
     })
 
-    .post('/grant',function (req, res) {
-        console.log("User granted "+req.body.pseudoUser);
-        console.log("List granted "+req.body.idList);
+    .post('/subscribe', function (req,res) {
+        console.log("subscribing : %s, %s, %s", req.body.username, req.body.pw, req.body.email);
 
-        var idUser;
+        //var mailManager;
 
-        userManager.findUser(req.body.pseudoUser)
-            .then(function (ans) {
-                    console.log('USER:'+ans.pseudo);
-                    idUser = ans._id;
-                },
-                function (err) {
-                    console.log(err);
-                    res.status(500).send(err);
-                })
-            .then(function(){
-                listManager.grantUser(idUser, req.body.idList)
-                    .then(
-                        function (response) {
-                            res.end("The user "+req.body.pseudoUser+" is now allowed to modify the list");
-                        },
-                        function (err) {
-                            res.status(500).send(err);
-                        });
+        var user = req.body.username;
+        var pw = req.body.pw;
+        var email = req.body.email;
+
+        mailLibs.newMailer().then(function (mailManager) {
+            userManager.userExist(user,function (isExist) {
+                if(isExist == false){
+                    userManager.addUser(user, pw, email);
+                    mailManager.sendMail();
+                    res.end("User "+user+" succefully created");
+                }
+                else{
+                    console.log('User already exists');
+                    res.status(500).send("User "+user+" already exists!");
+                }
             });
-        // 
-        //res.end();
+        });
+    })
+
+    .get('/deleteAllUsers', function (req, res) {
+        userManager.rmAll();
+        console.log("Users deleted");
+        res.end();
     });
+
+
+//TODO: mail de verification
 app.post('/sendMail', function(req, res) {
 
     //log the data
@@ -272,7 +305,32 @@ app.post('/sendMail', function(req, res) {
     }/**/
 });
 
-app.listen(1337);
+var server = app.listen(1337);
+
+
+//socket.io things
+var serveur = http.createServer(function (req, res) {
+    fs.readFile('./app/templates/home.html', 'utf-8', function (err, content) {
+        res.writeHead(200, {"Content-Type": "text/html"});
+        res.end(content)
+    });
+});
+
+var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function (socket) {
+    console.log("Un boubou est vétu");
+    //socket.emit('message', 'Yabon le blanc');
+
+    socket.on('clientRefresh', function (msg) {
+        console.log("Une liste a été actualisée "+msg.idList);
+        //broadcast emit here to refresh the other users on the list
+        socket.broadcast.emit('serverRefresh/'+msg.idList, 'serverRefresh/'+msg.idList);
+        // ? mettre un id après refresh pour identifier la liste
+    });
+});
+
+
 
 
 console.log("Serveur web lancé sur localhost:1337 ...");

@@ -23,6 +23,7 @@
             .then(function (res) {
                 user = res;
                 $scope.message = "Hi "+res.data.user.pseudo+"!";
+                $scope.user = res.data.user.pseudo;
             });
 
         //refreshing the content of the lists
@@ -41,8 +42,9 @@
         $scope.fillList = function(item){
             //synchro for the view
             $scope.listList.push(item);
+            console.log(item);
             //clearing the input
-            $scope.item = null;
+            //$scope.item = null;
         };
 
         //showing the form for a new list
@@ -58,15 +60,27 @@
         //create a new list for the current user
         $scope.newList = function (name) {
 
-            $http.post('/newlist', {name: name})
+            $http.post('/list', {name: name})
                 .then(
                     function (res) {
-                        refreshUserLists();
                         $scope.listName = "";
+                        refreshUserLists();
                     })
                 .then(function (err) {
                     console.log(err)
                 })
+        };
+
+        //delete a list
+        $scope.deleteList = function (idList) {
+            $http.delete('/list/'+idList).then(function (rep) {
+                $scope.message = "List successfully deleted";
+                refreshUserLists();
+            },
+            function (err) {
+                $scope.message = err;
+            });
+            // alert(idList);
         };
 
         //show the content of a list
@@ -74,16 +88,16 @@
             $scope.list.currentList = selectedList;
             $location.path("/contentList");
         };
-
-        //search a list name
-        $scope.searchList = function () {
-
+        
+        $scope.getNumber = function(num) {
+            return new Array(num);
         };
 
         //the newlist view is hidded by default
         $scope.newListView = true;
         //the field for search the list is showed by default
         $scope.searchListView = false;
+        $scope.item = "";
 
         refreshUserLists();
     }

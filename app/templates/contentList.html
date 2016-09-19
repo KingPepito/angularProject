@@ -1,31 +1,64 @@
 
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2>{{message}} {{id}}</h2>
+        </div>
+
+        <div class="panel-body text-center" ng-hide="editHide">
+            <h3>Please enter the new value</h3>
+            <form ng-submit="editElementFromList(elementToEdit, newValue)">
+                <input type="text" ng-model="newValue">
+                <input type="button" value="confirm" class="btn btn-default" ng-click="editElementFromList(elementToEdit, newValue)">
+                <input type="button" value="cancel" class="btn btn-default" ng-click="showEdit()">
+            </form>
+        </div>
+
+        <div class="panel-body" ng-hide="viewList">
+            <table class="table table-bordered">
+                <tr class="text-center" ng-repeat="element in list track by $index">
+
+                    <td ng-model="form">
+                        <button class="pull-left ">aqfza</button>
+                        <p ng-model="form.element" class="font-app">{{element}}
+                            <button ng-click="deleteElementFromList($index)" type="button" class="btn btn-danger pull-right marged-right">Delete</button>
+                            <button ng-click="showEdit($index)" type="button" class="btn btn-warning pull-right marged-right">Edit</button>
+                        </p>
+                        <!--<input ng-click="editElementFromList($index)" type="button" />-->
+                    </td>
+                </tr>
+            </table>
+
+
+            <div >
+                <div ng-hide="contentListView" class="center-form">
+                    <h2 class="text-center">Menu</h2>
+                    <form ng-submit="addElementToList(addContent)">
+                        <input class="input-round" type="text" ng-model="addContent" placeholder=" Add element"/>
+                        <input type="submit" class="btn btn-default submit-btn"/>
+                    </form>
+
+                    <form ng-submit="grantUser(userToGrant)">
+                        <input class="input-round" ng-model="userToGrant" placeholder=" Grant an user">
+                        <input type="submit" class="btn btn-default submit-btn">
+                    </form>
+                </div>
+            </div>
+
+            {{error}}
+        </div>
+    </div>
+
+</div>
+
+
+
+
 <div>
 
-    {{message}}
-    {{id}}
-    <ul>
-        <li  ng-repeat="element in list track by $index">
-            <span><p ng-click="">{{element}}</p> <button ng-click="deleteElementFromList($index)">X</button></span>
-        </li>
-    </ul>
-
-    <div ng-hide="contentListView">
-        <form ng-submit="addElementToList(addContent)">
-            <input type="text" ng-model="addContent" placeholder="add element"/>
-            <input type="submit"/>
-        </form>
-    </div>
 
 
-    <div>
-        Menu
-        <button>Edit the list</button>
-        <form ng-submit="grantUser(userToGrant)">
-            <input ng-model="userToGrant" placeholder="grant an user">
-            <input type="submit" >
-        </form>
-    </div>
 
-    {{error}}
 
 </div>

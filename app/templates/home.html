@@ -12,15 +12,51 @@
     <script src="/app/js/listContent/contentListController.js"></script>
     <script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/node_modules/angular-route/angular-route.js"></script>
+    <script src="/node_modules/socket.io-client/socket.io.js"></script>
+    <link rel="stylesheet" href="/app/css/bootstrap.css" />
+    <link rel="stylesheet" href="/app/css/style.css" />
+
     <base href="/" />
+
+    <script>
+        /*var socket = io.connect('http://localhost:1337');
+        socket.on('message', function (message) {
+            alert('Message du server: '+message);
+        })*/
+    </script>
 </head>
 <body ng-app = "myApp" ng-controller = "HomeController">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <div class="navbar-left" style="padding: 10px;">
+                    <img alt="Brand" src="/app/img/iconNav.png" style="width: 50px">
+                </div>
 
 
-    <ng-view></ng-view>
 
-    <button ng-click="goHome(false, '/foodList')">Homepage</button>
-    <button ng-click="goHome(true, '/')">Deconnect</button>
+            </div>
 
+            <button class="btn btn-default navbar-btn btn-navbar" ng-click="goHome(false, '/foodList')">Homepage</button>
+            <button class="btn btn-default navbar-btn" ng-click="goHome(true, '/')">Deconnect</button>
+
+            <div class="navbar-right" style="padding: 10px;">
+                <img alt="Brand" src="/app/img/iconUser.png" style="width: 50px">
+            </div>
+        </div>
+    </nav>
+
+    <div class="container view">
+        <ng-view></ng-view>
+    </div>
+
+
+
+    <footer class="footer navbar-fixed-bottom">
+
+        <div class="centeredElement">
+            <p> App made by <a href="https://www.linkedin.com/in/antoine-chan-550a18a5?trk=nav_responsive_tab_profile_pic">KingPepito</a></p>
+        </div>
+    </footer>
 </body>
 </html>

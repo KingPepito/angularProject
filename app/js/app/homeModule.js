@@ -53,4 +53,16 @@
         return {};
     });
 
+    //Service to interact with the socket library
+    angular.module("myApp").factory('socket', function (socketFactory) {
+        var myIoSocket = io.connect("http://localhost:1337");
+         /*
+        var socket = socketFactory({
+            ioSocket: myIoSocket
+        });
+
+        return socket;*/
+        return socketFactory;
+    });
+
 })();

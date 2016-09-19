@@ -21,7 +21,7 @@
                         }
                     }).then(function successCallback(response) {
                         console.log("subscribe success");
-                        $scope.message = response;
+                        $scope.message = "Account created ! Let's try it now";
                     }, function errorCallback(response) {
                         console.log("erreur inscription "+ response.data);
                         $scope.message = response.data;
