@@ -103,7 +103,6 @@ app.get('/', function(req, res) {
     // PARTIE GESTION CONTENU LIST
     .get('/getListContent/:idList', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
-        console.log('le param id list: '+req.params.idList);
 
         if(req.params.idList == "lastList"){
             listManager.findListById(req.session.list).then(function (response) {
@@ -130,8 +129,6 @@ app.get('/', function(req, res) {
     })
 
     .post('/elementFromList', function (req,res) {
-        console.log("element: "+req.body.newElement);
-        console.log("list: "+req.body.idList);
 
         if(req.body.idList)
 
@@ -157,7 +154,6 @@ app.get('/', function(req, res) {
     .put('/elementFromList/:idList/:element/:newValue', function (req,res) {
         listManager.editElementFromList(req.params.element, req.params.idList, req.params.newValue).then(
             function (response) {
-                console.log("goodending");
                 res.end();
         },
             function (err) {
@@ -166,8 +162,6 @@ app.get('/', function(req, res) {
     })
 
     .post('/grant',function (req, res) {
-        console.log("User granted "+req.body.pseudoUser);
-        console.log("List granted "+req.body.idList);
 
         var idUser;
 
