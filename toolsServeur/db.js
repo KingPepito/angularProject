@@ -19,6 +19,10 @@ exports.userManager = function () {
     //var for the object context
     var _this = this;
 
+    var vm = this;
+    vm.name = {};
+    vm.getAllUsers = function() { };
+
     //creating the user schema
     var userSchema = new mongoose.Schema({
         pseudo : { type : String, match: /^[a-zA-Z0-9-_]+$/ },
@@ -149,6 +153,25 @@ exports.userManager = function () {
             else{
                 deffered.resolve(user);
             }
+        });
+
+        return deffered.promise;
+    };
+
+    vm.getAllUsers = function () {
+        var deffered = when.defer();
+
+        UserModel.find({}, function(err, users) {
+
+            if(err){deffered.reject()}
+
+            var userMap = [];
+
+            users.forEach(function(user) {
+                userMap.push(user);
+            });
+
+            deffered.resolve(userMap);
         });
 
         return deffered.promise;

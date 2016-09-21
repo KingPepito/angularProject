@@ -165,6 +165,19 @@ app.get('/', function(req, res) {
             });
     })
 
+    .get('/allUsers', function (req, res) {
+        userManager.getAllUsers().then(
+            function (response) {
+                res.send({listUser :response});
+                res.end()
+            },
+            function (err) {
+                res.status(500).send(err);
+                throw err;
+            }
+        )
+    })
+
     .post('/grant',function (req, res) {
         console.log("User granted "+req.body.pseudoUser);
         console.log("List granted "+req.body.idList);

@@ -48,9 +48,9 @@
         };
 
         //showing the form for a new list
-        $scope.newListShow = function (name) {
+        /*$scope.newListShow = function (name) {
             $scope.newListView = false;
-        };
+        };*/
 
         //showing the form for a new list
         $scope.searchListHide = function (name) {

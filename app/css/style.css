@@ -78,3 +78,14 @@ body{
 	width: 100%;
 	font-size: large;
 }
+
+.btn-hover{
+	background:url(../img/iconTrash.png);
+	width: 40px;
+}
+
+.btn-hover:hover {
+	background:url(../img/iconTrash.png) no-repeat;
+
+
+}

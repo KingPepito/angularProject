@@ -137,12 +137,20 @@
         };
 
         $scope.showEdit = function (index) {
-            $scope.viewList = ($scope.editHide == true);
+            $scope.hideList = ($scope.editHide == true);
             $scope.editHide = ($scope.editHide == false);
             $scope.elementToEdit = index;
         };
 
-        $scope.editHide = true;
+        $scope.getAllUsers = function(){
+            $http.get('/allUsers').then(function (res) {
+                console.log(res.data);
+                $scope.listUsers = res.data.listUser;
+            })
+        }();
+
+        $scope.hideList = false;
+        $scope.hideEdit = true;
 
         $scope.list = [];
 

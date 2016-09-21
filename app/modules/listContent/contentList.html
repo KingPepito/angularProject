@@ -6,26 +6,36 @@
             <h2>{{message}} {{id}}</h2>
         </div>
 
-        <div class="panel-body text-center" ng-hide="editHide">
-            <h3>Please enter the new value</h3>
-            <form ng-submit="editElementFromList(elementToEdit, newValue)">
-                <input type="text" ng-model="newValue">
-                <input type="button" value="confirm" class="btn btn-default" ng-click="editElementFromList(elementToEdit, newValue)">
-                <input type="button" value="cancel" class="btn btn-default" ng-click="showEdit()">
-            </form>
-        </div>
+        <!--<div class="panel-body text-center" ng-hide="editHide">-->
+            <!--<h3>Please enter the new value</h3>-->
+            <!--<form ng-submit="editElementFromList(elementToEdit, newValue)">-->
+                <!--<input type="text" ng-model="newValue">-->
+                <!--<input type="button" value="confirm" class="btn btn-default" ng-click="editElementFromList(elementToEdit, newValue)">-->
+                <!--<input type="button" value="cancel" class="btn btn-default" ng-click="showEdit()">-->
+            <!--</form>-->
+        <!--</div>-->
 
-        <div class="panel-body" ng-hide="viewList">
+        <div class="panel-body">
             <table class="table table-bordered">
                 <tr class="text-center" ng-repeat="element in list track by $index">
 
                     <td ng-model="form">
-                        <button class="pull-left ">aqfza</button>
-                        <p ng-model="form.element" class="font-app">{{element}}
-                            <button ng-click="deleteElementFromList($index)" type="button" class="btn btn-danger pull-right marged-right">Delete</button>
-                            <button ng-click="showEdit($index)" type="button" class="btn btn-warning pull-right marged-right">Edit</button>
-                        </p>
-                        <!--<input ng-click="editElementFromList($index)" type="button" />-->
+                        <!--<button class="pull-left ">aqfza</button>-->
+                        <div ng-model="form.element" class="font-app">
+
+                            <div class="text-center" ng-hide="hideList">
+                                {{element}}
+                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-hover pull-right marged-right">
+                                <img ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-hover pull-right marged-right">
+                            </div>
+
+                            <form  class="form-inline" ng-submit="editElementFromList(elementToEdit, newValue)" ng-hide="hideEdit">
+                                <input type="text" ng-model="newValue">
+                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-hover pull-right marged-right">
+                                <img ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-hover pull-right marged-right">
+                            </form>
+                            <!--<button ng-click="showEdit($index)" type="button" class="btn btn-warning pull-right marged-right">Edit</button>-->
+                        </div>
                     </td>
                 </tr>
             </table>
@@ -36,12 +46,14 @@
                     <h2 class="text-center">Menu</h2>
                     <form ng-submit="addElementToList(addContent)">
                         <input class="input-round" type="text" ng-model="addContent" placeholder=" Add element"/>
-                        <input type="submit" class="btn btn-default submit-btn"/>
+                        <input type="submit" class="btn btn-default submit-btn" value="Add" />
                     </form>
 
                     <form ng-submit="grantUser(userToGrant)">
-                        <input class="input-round" ng-model="userToGrant" placeholder=" Grant an user">
-                        <input type="submit" class="btn btn-default submit-btn">
+                        <select class="input-round" ng-model="userToGrant" >
+                            <option ng-repeat="user in listUsers">{{user.pseudo}}</option>
+                        </select>
+                        <input type="submit" class="btn btn-default submit-btn" value="Grant an User">
                     </form>
                 </div>
             </div>
