@@ -23,18 +23,18 @@
                         <!--<button class="pull-left ">aqfza</button>-->
                         <div ng-model="form.element" class="font-app">
 
-                            <div class="text-center" ng-hide="hideList">
+                            <div class="text-center" ng-hide="tabHide[$index]">
                                 {{element}}
-                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-hover pull-right marged-right">
-                                <img ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-hover pull-right marged-right">
+                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-trash-hover pull-right marged-right">
+                                <img ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-trash-hover pull-right marged-right">
                             </div>
 
-                            <form  class="form-inline" ng-submit="editElementFromList(elementToEdit, newValue)" ng-hide="hideEdit">
-                                <input type="text" ng-model="newValue">
-                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-hover pull-right marged-right">
-                                <img ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-hover pull-right marged-right">
+                            <form  class="form-inline" ng-submit="editElementFromList($index, newValue)" ng-hide="!tabHide[$index]">
+                                <input type="text" class="input-round" ng-model="newValue">
+                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-trash-hover pull-right marged-right">
+                                <img ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-trash-hover pull-right marged-right">
                             </form>
-                            <!--<button ng-click="showEdit($index)" type="button" class="btn btn-warning pull-right marged-right">Edit</button>-->
+
                         </div>
                     </td>
                 </tr>

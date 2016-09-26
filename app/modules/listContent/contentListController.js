@@ -114,7 +114,7 @@
             $http.put('/elementFromList/'+idList+'/'+element+'/'+newValue)
                 .then(
                     function (res) {
-                        $scope.showEdit();
+                        $scope.showEdit(element);
                         refreshList(true);
                     }, function (err) {
                         $scope.error = "An error occured while deleting this item, please try later"
@@ -137,9 +137,11 @@
         };
 
         $scope.showEdit = function (index) {
-            $scope.hideList = ($scope.editHide == true);
+            /*$scope.hideList = ($scope.editHide == true);
             $scope.editHide = ($scope.editHide == false);
-            $scope.elementToEdit = index;
+            $scope.elementToEdit = index;*/
+
+            $scope.tabHide[index] = (!$scope.tabHide[index]);
         };
 
         $scope.getAllUsers = function(){
@@ -148,6 +150,9 @@
                 $scope.listUsers = res.data.listUser;
             })
         }();
+
+        //tableau containing the fields to edit
+        $scope.tabHide = [];
 
         $scope.hideList = false;
         $scope.hideEdit = true;

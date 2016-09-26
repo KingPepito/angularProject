@@ -79,13 +79,13 @@ body{
 	font-size: large;
 }
 
-.btn-hover{
-	background:url(../img/iconTrash.png);
+.btn-trash-hover{
 	width: 40px;
 }
 
-.btn-hover:hover {
-	background:url(../img/iconTrash.png) no-repeat;
-
-
+.btn-trash-hover:hover
+{
+	-moz-box-shadow: 0 0 15px #2d2d2d;
+	-webkit-box-shadow: 0 0 15px #2D2D2D;
+	box-shadow: 0 0 15px #2D2D2D;
 }
