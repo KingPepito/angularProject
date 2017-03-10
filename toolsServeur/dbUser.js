@@ -144,37 +144,38 @@ exports.userManager = function () {
     };
 
     this.findUser = function (userPseudo) {
-        var deffered = when.defer();
-
-        UserModel.findOne({pseudo: userPseudo}, function (err, user) {
-            if(user == null){
-                deffered.reject("The user your looking for doesn't exist");
-            }
-            else{
-                deffered.resolve(user);
-            }
+        let promise = new Promise(function (resolve, reject) {
+            
+            UserModel.findOne({pseudo: userPseudo}, function (err, user) {
+                if(user == null){
+                    reject("The user your looking for doesn't exist");
+                }
+                else{
+                    resolve(user);
+                }
+            });
         });
 
-        return deffered.promise;
+        return promise;
     };
 
     vm.getAllUsers = function () {
-        var deffered = when.defer();
+        let promise = new Promise(function (resolve, reject) {
+            UserModel.find({}, function(err, users) {
 
-        UserModel.find({}, function(err, users) {
+                if(err){reject("Error while loading all the users profiles")}
 
-            if(err){deffered.reject()}
+                let userMap = [];
 
-            var userMap = [];
+                users.forEach(function(user) {
+                    userMap.push(user);
+                });
 
-            users.forEach(function(user) {
-                userMap.push(user);
+                resolve(userMap);
             });
-
-            deffered.resolve(userMap);
         });
 
-        return deffered.promise;
+        return promise;
     }
 };
 

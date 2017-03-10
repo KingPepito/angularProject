@@ -94,112 +94,113 @@ exports.listManager = function () {
 
     //TODO: parameter without content
     this.findListByUser = function (user) {
-        var deffered = when.defer();
-        console.log("user:"+user);
-        //content
-        ListModel.find({usersAllowed:user}, function (err, res) {
-            if (err) { throw err; }
-            // comms est un tableau de hash
-            console.log(res);
-            deffered.resolve(res);
+
+        let promise = new Promise(function(resolve, reject) {
+            console.log("Finding list for user: "+user);
+
+            ListModel.find({usersAllowed:user}, function (err, res) {
+                if (err) { throw err; }
+                // comms est un tableau de hash
+                console.log(res);
+                resolve(res);
+            });
         });
 
-        return deffered.promise;
+        return promise;
+
     };
 
     //TODO: use findOne instead of find
     this.findListById = function (idList) {
-        var deffered = when.defer();
-        console.log("idlist:"+idList);
-        //content
-        ListModel.find({_id : idList}, function (err, res) {
-            if (err) { throw err; }
-            // comms est un tableau de hash
-            console.log("content"+res);
-            deffered.resolve(res);
+        let promise = new Promise(function(resolve, reject) {
+            console.log("idlist:"+idList);
+            //content
+            ListModel.find({_id : idList}, function (err, res) {
+                if (err) { throw err; }
+                // comms est un tableau de hash
+                console.log("content"+res);
+                resolve(res);
+            });
         });
-
-        return deffered.promise;
+        return promise;
     };
 
     this.addElementToList = function (element, idList) {
-        var deffered = when.defer();
+        let promise = new Promise(function(resolve, reject) {
         
-        ListModel.findOne({_id: idList}, function (err, list) {
-            list.content.push(element);
+            ListModel.findOne({_id: idList}, function (err, list) {
+                list.content.push(element);
 
-            list.save(function (err) {
-                if(err) {
-                    console.error('ERROR!');
-                }
-                else {
-                    deffered.resolve(true);
-                }
+                list.save(function (err) {
+                    if(err) {
+                        console.error('ERROR!');
+                    }
+                    else {
+                        resolve(true);
+                    }
+                });
             });
         });
 
-        return deffered.promise;
+        return promise;
     };
 
     this.deleteElementFromList = function (element, idList) {
-        var deffered = when.defer();
+        let promise = new Promise(function(resolve, reject) {
 
-        ListModel.findOne({_id: idList}, function (err, list) {
-            list.content.splice(element, 1);
+            ListModel.findOne({_id: idList}, function (err, list) {
+                list.content.splice(element, 1);
 
-            list.save(function (err) {
-                if(err) {
-                    console.error('ERROR!');
-                }
-                else {
-                    deffered.resolve(true);
-                }
+                list.save(function (err) {
+                    if(err) {
+                        console.error('ERROR!');
+                    }
+                    else {
+                        resolve(true);
+                    }
+                });
             });
         });
 
-        return deffered.promise;
+        return promise;
     };
 
     this.editElementFromList = function (element, idList, newValue) {
-        var deffered = when.defer();
+        let promise = new Promise(function(resolve, reject) {
 
-
-
-        ListModel.findOne({_id: idList}, function (err, list) {
-            console.log(list.content[element]);
-            list.content.splice(element,1, newValue);
-            list.save(function (err) {
-                if(err) {
-                    console.error('ERROR!');
-                }
-                else {
-                    deffered.resolve(true);
-                }
+            ListModel.findOne({_id: idList}, function (err, list) {
+                // replace the value
+                list.content.splice(element,1, newValue);
+                list.save(function (err) {
+                    if(err) {
+                        console.error('ERROR!');
+                        reject();
+                    }
+                    else {
+                        resolve();
+                    }
+                });
             });
-
         });
 
-        return deffered.promise;
+        return promise;
     };
 
     this.grantUser = function (idUser, idList) {
-        var deffered = when.defer();
+        let promise = new Promise(function (resolve, reject) {
+            ListModel.findOne({_id: idList}, function (err, list) {
 
-        ListModel.findOne({_id: idList}, function (err, list) {
-            list.usersAllowed.push(idUser);
+                if(list.usersAllowed.indexOf(idUser) != -1){reject("This user can already access this list"); return; }
 
-            list.save(function (err) {
-                if(err) {
-                    console.error('ERROR!');
-                    deffered.reject("An error occured while updating the user's right please try again later")
-                }
-                else {
-                    deffered.resolve();
-                }
+                list.usersAllowed.push(idUser);
+                list.save(function (err) {
+                    if(err) { reject("An error occured while updating the user's right please try again later"); return; }
+                    resolve();
+                });
             });
         });
 
-        return deffered.promise;
+        return promise;
     }
 };
 
