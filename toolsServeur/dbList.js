@@ -38,8 +38,7 @@ exports.listManager = function () {
         //saving in db
         ListModel.find({name: 'test'}, function (err, res) {
             if (err) { throw err; }
-            // comms est un tableau de hash
-            console.log(res);
+            
             if(res[1] != null){
                 console.log('List exist')
             }
@@ -52,8 +51,6 @@ exports.listManager = function () {
     this.newList = function(name, user){
 
         var deffered = when.defer();
-        console.log("name:"+name);
-        console.log("user:"+user);
         //new user in the base
         var List = new ListModel({
             name : name,
@@ -80,7 +77,6 @@ exports.listManager = function () {
         ListModel.remove({_id:idList}, function (err) {
             if (err) {
                 deffered.reject("Something goes wrong");
-                console.log("Something goes wrong");
                 throw err;
             }
                deffered.resolve(true);
@@ -100,8 +96,7 @@ exports.listManager = function () {
 
             ListModel.find({usersAllowed:user}, function (err, res) {
                 if (err) { throw err; }
-                // comms est un tableau de hash
-                console.log(res);
+                // comms est un tableau de hash;
                 resolve(res);
             });
         });
@@ -118,7 +113,6 @@ exports.listManager = function () {
             ListModel.find({_id : idList}, function (err, res) {
                 if (err) { throw err; }
                 // comms est un tableau de hash
-                console.log("content"+res);
                 resolve(res);
             });
         });

@@ -1,6 +1,8 @@
+
 /**
  * Created by Antoine Chan on 07/03/2017.
  */
+let ColorGenerator = require("./ColorsGenerator");
 
 //socket.io things
 
@@ -8,46 +10,100 @@ const SocketIO_List = class SocketIO_List {
 
     constructor(server){
         //TODO array 2D
-        let allClientsConnected = [];
+        let clientsConnectedToList = {};
 
+        let colorGenerator = new ColorGenerator();
         var io = require('socket.io').listen(server);
 
-        io.sockets.on('connection', function (socket) {
+        io.sockets.on('connection', function (client) {
 
-            allClientsConnected.push(socket.id);
+            console.log("Connexion socket");
 
-            socket.emit("setID", socket.id);
+            let userList;
+            let userName;
 
-            console.log("Connexion socket"+socket.id);
+            client.on("setUserToList", function (msg) {
+                //TODO: room if the room name is ok
 
-            socket.on('setUsername', function(msg) {
-                console.log(msg.username);
+                console.log("setUSER"+msg.username);
+                console.log("setLIST"+msg.idList);
+
+                userList = msg.idList;
+                userName = msg.username;
+
+                //init list user connected to this list
+                if(!clientsConnectedToList[userList])
+                {
+                    console.log("init");
+                    clientsConnectedToList[userList] = [];
+                    let user = {
+                    username: msg.username,
+                    color: colorGenerator.getRandomColor()
+                    };
+                    clientsConnectedToList[userList].push(user);
+                }
+
+                // if(clientsConnectedToList[userList].indexOf(msg.username) == -1) {
+                //     let user = {
+                //         username: msg.username,
+                //         color: colorGenerator.getRandomColor()
+                //     };
+                //     clientsConnectedToList[userList].push(user);
+                // }
+
+                let isAlreadyInArray = clientsConnectedToList[userList].find((user) =>{
+                    return user.username == msg.username;
+                });
+
+                if(!isAlreadyInArray){
+                    let user = {
+                        username: msg.username,
+                        color: colorGenerator.getRandomColor()
+                    };
+                    clientsConnectedToList[userList].push(user);
+                }
+
+                // if (user.username == msg.username){
+                //     console.log("bruh");
+                //     isAlreadyInArray = true;
+                //     //TODO:in funct
+                //
+                // }
+                // else { console.log("already bruh") }
+
+                client.emit('refreshUsersList/'+userList, clientsConnectedToList[userList]);/**/
+                client.broadcast.emit('refreshUsersList/'+userList, clientsConnectedToList[userList]);
+
             });
+            
 
-            socket.on('clientRefresh', function (msg) {
+
+            //if something has changed inside the list
+            client.on('clientRefresh', function (msg) {
                 console.log("Une liste a été actualisée "+msg.idList);
                 //broadcast emit here to refresh the other users on the list
-                socket.broadcast.emit('serverRefresh/'+msg.idList, 'serverRefresh/'+msg.idList);
+                client.broadcast.emit('serverRefresh/'+msg.idList, 'serverRefresh/'+msg.idList);
                 // TODO: mettre un id après refresh pour identifier la liste
             });
 
-            socket.on('clientConnected', function (msg) {
-                console.log("Client " + msg.user + "connected at " + msg.list);
-                allClientsConnected.push(msg.user);
-                //broadcast emit here to refresh the other users on the list
-                socket.broadcast.emit('clientConnected/'+msg.list, msg.user);
-                // TODO: mettre un id après refresh pour identifier la liste
-            });
-
-            socket.on('clientDisconnected', function (msg) {
+            client.on('clientDisconnected', function (msg) {
                 console.log("Client " + msg.user + "disconnected from " + msg.list);
                 //broadcast emit here to refresh the other users on the list
-                socket.broadcast.emit('clientDisconnected/'+msg.user, 'clientDisconnected/'+msg.idList);
+                client.broadcast.emit('clientDisconnected/'+msg.user, 'clientDisconnected/'+msg.idList);
                 // TODO: mettre un id après refresh pour identifier la liste
             });
 
-            socket.on('disconnect', function() {
-                console.log('Got disconnect!');
+            client.on('disconnect', function() {
+
+                if(!userList || !clientsConnectedToList[userList]) { return; }
+                //delete the user from the list array using filter
+                clientsConnectedToList[userList] = clientsConnectedToList[userList].filter(function(element){
+                    console.log(userName != element);
+                    return (userName != element);
+                });
+                client.broadcast.emit('refreshUsersList/'+userList, clientsConnectedToList[userList]);
+
+                console.log('Got disconnect for user '+ userName +'!');
             });
         });
     }

@@ -4,8 +4,7 @@
 
 (function () {
 
-
-    function ContentListController($scope, $http, $timeout, $location, $anchorScroll, listService) {
+    function ContentListController($scope, $http, $timeout, $location, $anchorScroll, listService, userService, randomColor) {
 
         //TODO: plusieurs var dans differents service
         let idList;
@@ -15,42 +14,16 @@
         let idSocket;
 
         // init as a string
-        $scope.usersConnected = "";
-
-        let checkUserConnected = function () {
-            let promise = new Promise( function(resolve, reject){
-                $http.get('/user')
-                    .then(function (res) {
-                    if(res.data.user == ""){
-                        $location.path('/');
-                    }
-                    else {
-                        // Get the current user
-                        currentUser = res.data.user.pseudo;
-                        resolve()
-                    }
-                })
-            });
-            return promise;
-        };
+        $scope.usersConnected = [];
 
         //TODO: mettre dans un service
-        let socket = io.connect('http://localhost:1337');
 
+        let socket = io.connect();
         // Connect to the Socket.IO and init the path
         let initializeSocket = function () {
 
-
             socket.on('message', function (message) {
                 alert('Message du server: '+message);
-            });
-
-            socket.on('setID', function (message) {
-                idSocket = message;
-                socket.emit("setUsername", {
-                    username: currentUser,
-                    idSocket: idSocket
-                });
             });
 
             socket.on('serverRefresh/'+idList, function (message) {
@@ -58,15 +31,26 @@
                 $scope.message = message;
             });
 
-            socket.on('clientConnected/'+idList, function (message) {
-                console.log(message + " is now connected");
-                addUsersWorking(message);
+            socket.on('refreshUsersList/'+idList, function (message) {
+                console.log("Refreshing the list users connected"+message);
+                setUsersWorking(message);
             });
 
-            socket.emit('clientConnected', {
-                user: currentUser,
-                list: idList
+            socket.on('addUserConnected', function (message) {
+                console.log("Refreshing the list users connected"+message);
+                setUsersWorking(message);
             });
+
+            console.log("user "+currentUser.pseudo);
+            console.log("idList "+idList);
+
+            socket.emit('setUserToList', {
+                username: currentUser.pseudo,
+                idList: idList
+            });
+
+            //socket.to('room'+idList, 'refreshUsersList/'+idList, ['caca','pipi']);
+
         };
 
         //refreshing the content of the lists
@@ -100,15 +84,19 @@
         if(isCurrentListDefined()){
             //the field for search the list is showed by default
             idList = listService.currentList._id;
-            checkUserConnected()
-                .then(function() {initializeSocket()} )
+            userService.getCurrentUser()
+                .then(function(user) {
+                    currentUser = user;
+                    initializeSocket()} )
                 .then(function() {refreshList()});
         }
         else{
             $http.get("/list/last").then(function (res) {
                 idList = res.data;
-                checkUserConnected()
-                    .then(function() {initializeSocket()} )
+                userService.getCurrentUser()
+                    .then(function(user) {
+                        currentUser = user;
+                        initializeSocket()} )
                     .then(function() {refreshList()});
             })
         }
@@ -164,15 +152,22 @@
 
         //allow another user to access the list
         $scope.grantUser = function (user) {
-            if(!user){ showError("Please select a user to grant"); return; }
+            
+            userService.grantUser(user, idList)
+                .then(
+                    function (res) {
+                        $scope.userToGrant = "";
+                        // showError(res.data);
+                        $scope.error = res.data;
+                        console.log("res" + res.data)
+                    }
+                    )
+                .catch(function (err) {
+                    //showError(err);
+                    $scope.error = err;
+                    console.log("err" + err);
+                });
 
-            console.log(user);
-
-            $http.post('/list/'+listService._id+'/grant/'+user).
-            then(function (res) {
-                $scope.userToGrant = "";
-                showError(res.data);
-            });
         };
 
         $scope.showEdit = function (index) {
@@ -198,19 +193,36 @@
             $timeout( function () {
                if($scope.error == error) {$scope.error = ""}
             }, 5000);
+            $scope.$apply();
         };
 
-       let addUsersWorking = function (user) {
-           //Security to not add two times
-           if(usersConnected.indexOf(user) == -1){
-               usersConnected.push(user);
-               $scope.usersConnected += " " + user;
-           }
-           //refreshListUsersConnected();
+       let setUsersWorking = function (userArray) {
+           $scope.usersConnected = [];
+           usersConnected = userArray;
+           //Add the array into the view
+           usersConnected.forEach(function (user) {
+               //TODO: generate icon
+               // $scope.usersConnected += " " + element;
+               //$scope.usersConnected.push(username);
+               $scope.usersConnected.push(generateIcon(user));
+               console.log("element"+user.username);
+           });
            // Applying the changein the view
            $scope.$apply();
        };
 
+        let generateIcon = function (user) {
+            return {
+                username:user.username,
+                color:user.color,
+                initials:user.username[0]
+            }
+        };
+
+        $scope.$on('$locationChangeStart', function( event ) {
+            socket.disconnect();
+            console.log("caca");
+        });
 
         //tableau containing the fields to edit
         $scope.tabHide = [];

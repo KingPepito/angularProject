@@ -1,0 +1,2 @@
+voir animation liste (animate.css, bulma)
+faire un tableau d'icone pour les utilisateurs

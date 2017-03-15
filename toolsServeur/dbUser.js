@@ -51,8 +51,7 @@ exports.userManager = function () {
         //saving in db
         UserModel.find({pseudo: 'Dude'}, function (err, res) {
             if (err) { throw err; }
-            // comms est un tableau de hash
-            console.log(res);
+            
             if(res[1] != null){
                 console.log('SuperUser already exist')
             }
@@ -122,7 +121,6 @@ exports.userManager = function () {
 
         UserModel.find({pseudo: UserPseudo}, function (err, res) {
             if (err) { throw err; }
-            console.log("mdp: "+res[0]['mdp']+" pw en param: "+PW);
 
             var isGood = (res[0]['mdp'] == PW);
             callBack(isGood);

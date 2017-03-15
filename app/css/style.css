@@ -1,5 +1,5 @@
 body{
-	background-color: #b9d7ff;
+	background-color: rgba(0, 15, 48, 0.53);
 }
 
 .font-app{
@@ -88,4 +88,32 @@ body{
 	-moz-box-shadow: 0 0 15px #2d2d2d;
 	-webkit-box-shadow: 0 0 15px #2D2D2D;
 	box-shadow: 0 0 15px #2D2D2D;
+}
+
+.iconUser
+{
+	border: inset 5px;
+	width: 35px;
+	height: 35px;
+	line-height: 25px;
+	text-align:center;
+	vertical-align: middle;
+	font-size: large;
+	font-family: "Bauhaus 93";
+}
+
+.iconUser span {
+	position:absolute;
+	margin-top:-50px;
+	margin-left:-10px;
+	background:rgba(0,0,0,.9);
+	padding:15px;
+	border-radius:3px;
+	box-shadow:0 0 2px rgba(0,0,0,.5);
+	transform:scale(0) rotate(-12deg);
+	transition:all .25s;
+}
+
+.iconUser:hover span{
+	transform:scale(1) rotate(0);
 }

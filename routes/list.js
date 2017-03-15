@@ -18,7 +18,6 @@ router//getting the lists of an user
         res.setHeader('Content-Type', 'application/json');
 
         listManager.findListByUser(req.session.user._id).then(function (response) {
-            console.log('check this list '+response);
             res.send(response);
             res.end();
         });
@@ -114,15 +113,11 @@ router//getting the lists of an user
     .post('/list/:idList/grant/:pseudoUser',function (req, res) {
         if(!req.params.pseudoUser || !req.params.idList) { res.status(500).send(err); }
 
-        console.log("User granted "+req.params.pseudoUser);
-        console.log("List granted "+req.params.idList);
-
         let idUser;
 
         //check if the user exist then grant him
         userManager.findUser(req.params.pseudoUser)
             .then(function (ans) {
-                    console.log('USER:'+ans.pseudo);
                     idUser = ans._id;
                 },
                 function (err) {

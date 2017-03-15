@@ -59,19 +59,21 @@
             </div>
 
             <p style="color:#ac2925" id="error"> {{error}} </p>
-            <p > Users connected: {{usersConnected}} </p>
+            <h3 > Users connected: </h3>
+
+            <div ng-repeat="user in usersConnected track by $index" style="display: inline-block">
+                <div class="iconUser"
+                     style="color: rgb({{user.color.r}}, {{user.color.g}}, {{user.color.b}});
+                            border-color: rgb({{user.color.r}}, {{user.color.g}}, {{user.color.b}});
+                            margin:5px"
+                >
+                    {{user.initials}}
+                    <!--info popup-->
+                    <span>{{user.username}}</span>
+                </div>
+            </div>
         </div>
     </div>
 
 </div>
 
-
-
-
-<div>
-
-
-
-
-
-</div>
