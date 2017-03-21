@@ -36,20 +36,12 @@ const SocketIO_List = class SocketIO_List {
                 {
                     console.log("init");
                     clientsConnectedToList[userList] = [];
-                    let user = {
-                    username: msg.username,
-                    color: colorGenerator.getRandomColor()
-                    };
-                    clientsConnectedToList[userList].push(user);
+                    // let user = {
+                    // username: msg.username,
+                    // color: colorGenerator.getRandomColor()
+                    // };
+                    // clientsConnectedToList[userList].push(user);
                 }
-
-                // if(clientsConnectedToList[userList].indexOf(msg.username) == -1) {
-                //     let user = {
-                //         username: msg.username,
-                //         color: colorGenerator.getRandomColor()
-                //     };
-                //     clientsConnectedToList[userList].push(user);
-                // }
 
                 let isAlreadyInArray = clientsConnectedToList[userList].find((user) =>{
                     return user.username == msg.username;
@@ -62,14 +54,6 @@ const SocketIO_List = class SocketIO_List {
                     };
                     clientsConnectedToList[userList].push(user);
                 }
-
-                // if (user.username == msg.username){
-                //     console.log("bruh");
-                //     isAlreadyInArray = true;
-                //     //TODO:in funct
-                //
-                // }
-                // else { console.log("already bruh") }
 
                 client.emit('refreshUsersList/'+userList, clientsConnectedToList[userList]);/**/
                 client.broadcast.emit('refreshUsersList/'+userList, clientsConnectedToList[userList]);
@@ -98,15 +82,25 @@ const SocketIO_List = class SocketIO_List {
                 if(!userList || !clientsConnectedToList[userList]) { return; }
                 //delete the user from the list array using filter
                 clientsConnectedToList[userList] = clientsConnectedToList[userList].filter(function(element){
-                    console.log(userName != element);
-                    return (userName != element);
+                    return (userName != element.username);
                 });
                 client.broadcast.emit('refreshUsersList/'+userList, clientsConnectedToList[userList]);
 
                 console.log('Got disconnect for user '+ userName +'!');
             });
         });
+
+        this.addUserToList = function(user, idList){
+            let userProfile = {
+                username: user.username,
+                color: colorGenerator.getRandomColor()
+            };
+            clientsConnectedToList[idList].push(userProfile);
+        }
+
     }
+
+
 
 };
 

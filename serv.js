@@ -2,15 +2,15 @@
  * Created by Antoine Chan on 14/06/2016.
  */
 
-var http = require('http'),
+let http = require('http'),
     url = require("url"),
     express = require('express'),
     app = express(),
     path = require('path'),
     bodyParser = require("body-parser"),
-    when = require('when'),
     session = require('cookie-session'),    
-    fs = require('fs');
+    fs = require('fs'),
+    helmet = require('helmet');
 
 // Routes
 let routes = require('./routes/index');
@@ -19,6 +19,9 @@ let routes = require('./routes/index');
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+// securing the app
+app.use(helmet());
 
 /* On utilise les sessions*/
 app.use(session({secret: 'secretpw'}))

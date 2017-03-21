@@ -67,12 +67,13 @@
 
             let promise = new Promise(function (resolve, reject) {
 
-                if(!user){ reject("Please select a user to grant"); return}
-
-                $http.post('/list/'+idList+'/grant/'+user).
-                then(function (res) {
-                    resolve(res)
-                });
+                if(!user){ reject("Please select a user to grant");}
+                else{
+                    $http.post('/list/'+idList+'/grant/'+user).
+                    then(function (res) {
+                        resolve(res)
+                    });
+                }
             });
             
             return promise;

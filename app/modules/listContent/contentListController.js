@@ -57,18 +57,26 @@
         //use emiting as True to refresh other user on the same list
         let refreshList = function(isEmitingToOthers){
             $scope.addContent = "";
-            $scope.list = [];
+            //$scope.list = [];
             $http.get('/list/'+idList).then(function (res) {
+
+                let newList = res.data.list.content;
+
                 console.log(res);
                 listService = res.data.list;
 
                 //the field for search the list is showed by default
                 $scope.message = "Here is your list: "+res.data.list.name;
 
-                //putting the list content in the $scope
-                res.data.list.content.forEach(function (element) {
-                    $scope.fillList(element);
+                //Update the list
+                newList.forEach(function (element, index) {
+                    if(newList[index] != $scope.list[index]){
+                        updateElementFromList(newList[index], index);
+                    }
                 });
+
+                //deleting the last element if an element have been deleted
+                while(newList.length < $scope.list.length) {$scope.list.pop();}
 
                 if(isEmitingToOthers == true){
                     socket.emit('clientRefresh', {idList:idList});
@@ -103,11 +111,17 @@
 
         //refreshing the view of the lists
         $scope.fillList = function(item){
-            console.log(item);
             //synchro for the view
             $scope.list.push(item);
             //clearing the input
             $scope.item = null;
+        };
+
+        //refreshing the view of the lists
+        let updateElementFromList = function(newItem, id){
+            console.log("newItem"+newItem);
+            //synchro for the view
+            $scope.list[id] = newItem;
         };
 
         //add an element to a list
@@ -154,17 +168,15 @@
         $scope.grantUser = function (user) {
             
             userService.grantUser(user, idList)
-                .then(
-                    function (res) {
-                        $scope.userToGrant = "";
-                        // showError(res.data);
-                        $scope.error = res.data;
-                        console.log("res" + res.data)
-                    }
-                    )
+                .then(function (res) {
+                    $scope.userToGrant = "";
+                    // showError(res.data);
+                    $scope.error = res.data;
+                    console.log("res" + res.data)
+                })
                 .catch(function (err) {
-                    //showError(err);
-                    $scope.error = err;
+                    showError(err);
+                    //$scope.error = err;
                     console.log("err" + err);
                 });
 
@@ -191,7 +203,7 @@
             $anchorScroll();
             //clearing error in 5 sec
             $timeout( function () {
-               if($scope.error == error) {$scope.error = ""}
+               if($scope.error == error) { $scope.error = "" }
             }, 5000);
             $scope.$apply();
         };

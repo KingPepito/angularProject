@@ -4,11 +4,11 @@
 (function () {
 
 
-    function ListController($scope, $http, $interval, $location,$routeParams,listService) {
+    function ListController($scope, $http, $location, $anchorScroll, listService) {
 
-        var user;
+        let user;
 
-        var checkConnect = function () {
+        let checkConnect = function () {
             $http.get('/user').then(function (res) {
                 if(res.data.user == ""){
                     $location.path('/');
@@ -26,32 +26,6 @@
                 $scope.user = res.data.user.pseudo;
             });
 
-        //refreshing the content of the lists
-        var refreshUserLists = function(){
-            $scope.listList = [];
-            $http.get('/list')
-                .then(function (res) {
-                    //showing the lists the user can access in
-                    res.data.forEach( function (element) {
-                        $scope.fillList(element);
-                    });
-                });
-        };
-
-        //refreshing the view of the lists
-        $scope.fillList = function(item){
-            //synchro for the view
-            $scope.listList.push(item);
-            console.log(item);
-            //clearing the input
-            //$scope.item = null;
-        };
-
-        //showing the form for a new list
-        /*$scope.newListShow = function (name) {
-            $scope.newListView = false;
-        };*/
-
         //showing the form for a new list
         $scope.searchListHide = function (name) {
             $scope.searchListView = true;
@@ -59,14 +33,20 @@
 
         //create a new list for the current user
         $scope.newList = function (name) {
-
             $http.post('/list', {name: name})
                 .then(
                     function (res) {
+                        console.log($scope.listName);
+                        //Clear listname input
                         $scope.listName = "";
+                        //TODO:directive to replace the include
                         refreshUserLists();
+                        // the element of the list freshly created
+                        $location.hash(name);
+                        // scroll to it
+                        $anchorScroll();
                     })
-                .then(function (err) {
+                .catch(function (err) {
                     console.log(err)
                 })
         };
@@ -81,6 +61,22 @@
                 $scope.message = err;
             });
             // alert(idList);
+        };
+
+        //refreshing the user's lists
+        let refreshUserLists = function(){
+            //$scope.listList = [];
+            $http.get('/list')
+                .then(function (res) {
+                    console.log(res.data);
+                    //showing the lists the user can access in
+                    res.data.forEach( function (element, index) {
+                        if ($scope.listList[index] != element){ $scope.listList[index] = res.data[index] }
+                    });
+
+                    //deleting the last element if an element have been deleted
+                    while(res.data.length < $scope.listList.length) {$scope.listList.pop();}
+                });
         };
 
         //show the content of a list
@@ -98,6 +94,7 @@
         //the field for search the list is showed by default
         $scope.searchListView = false;
         $scope.item = "";
+        $scope.listList = [];
 
         refreshUserLists();
     }
