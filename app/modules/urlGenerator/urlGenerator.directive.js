@@ -24,24 +24,23 @@ function urlGenerator() {
     return directive;
 
     function link(scope, http, attrs) {
-        /* scope.generateUrl = function () {
-         http.get('/allUsers').then(function (res) {
-         alert(res);
-         });
-         }*/
 
     }
 }
 
-controllerUrlGenerator.$inject = ['$scope', '$http'];
+controllerUrlGenerator.$inject = ['$scope', '$http', '$location'];
 
-function controllerUrlGenerator($scope, $http) {
+function controllerUrlGenerator($scope, $http, $location) {
     // Injecting $scope just for comparison
-    var vm = this;
+    let vm = this;
 
     $scope.generateUrl = function () {
-        $http.get('/allUsers').then(function (res) {
-            alert(res);
-        });
+        $http.post('/list/url')
+            .then(function (res)
+            {
+                //redirect to the freshly created list
+                let url = res.data;
+                $location.path("/contentListUrl/"+url);
+            });
     }
 }

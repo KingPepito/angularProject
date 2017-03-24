@@ -15,7 +15,7 @@
         };
 
         $scope.goHome = function (decoUser, path) {
-            if (decoUser){
+            if (decoUser) {
                 $location.path(path);
                 $http.get('/deconnexion');
             }
@@ -24,7 +24,7 @@
             }
         }
     }
-        
+
     angular.module('myApp').controller("HomeController", HomeController);
 
 })();

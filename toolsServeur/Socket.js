@@ -59,7 +59,6 @@ const SocketIO_List = class SocketIO_List {
                 client.broadcast.emit('refreshUsersList/'+userList, clientsConnectedToList[userList]);
 
             });
-            
 
 
             //if something has changed inside the list
@@ -99,9 +98,7 @@ const SocketIO_List = class SocketIO_List {
         }
 
     }
-
-
-
+    
 };
 
 module.exports = SocketIO_List;

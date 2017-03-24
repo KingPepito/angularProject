@@ -19,8 +19,10 @@
         //TODO: mettre dans un service
 
         let socket = io.connect();
+
         // Connect to the Socket.IO and init the path
         let initializeSocket = function () {
+
 
             socket.on('message', function (message) {
                 alert('Message du server: '+message);
@@ -40,17 +42,15 @@
                 console.log("Refreshing the list users connected"+message);
                 setUsersWorking(message);
             });
-
             console.log("user "+currentUser.pseudo);
+
             console.log("idList "+idList);
+
 
             socket.emit('setUserToList', {
                 username: currentUser.pseudo,
                 idList: idList
             });
-
-            //socket.to('room'+idList, 'refreshUsersList/'+idList, ['caca','pipi']);
-
         };
 
         //refreshing the content of the lists
@@ -171,7 +171,7 @@
                 .then(function (res) {
                     $scope.userToGrant = "";
                     // showError(res.data);
-                    $scope.error = res.data;
+                    showError(res.data);
                     console.log("res" + res.data)
                 })
                 .catch(function (err) {
@@ -197,6 +197,7 @@
         //
         let showError = function (error) {
             $scope.error = error;
+
             // the element you wish to scroll to.
             $location.hash('error');
             // call $anchorScroll()
@@ -206,6 +207,7 @@
                if($scope.error == error) { $scope.error = "" }
             }, 5000);
             $scope.$apply();
+            return;
         };
 
        let setUsersWorking = function (userArray) {

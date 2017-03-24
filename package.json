@@ -12,10 +12,7 @@
     "helmet": "^3.5.0",
     "http": "0.0.0",
     "mongoose": "^4.6.0",
-    "nodemailer": "^2.4.2",
-    "promise": "^7.1.1",
-    "sms-sending": "0.0.4",
-    "socket.io": "^1.4.8",
+    "socket.io": "^1.7.3",
     "when": "^3.7.7"
   },
   "devDependencies": {},

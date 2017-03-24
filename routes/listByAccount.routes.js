@@ -11,16 +11,22 @@ const dbList = require("../toolsServeur/dbList");
 //object managing db user
 let userManager = new db.userManager();
 //object managing the lists
-let listManager = new dbList.listManager();
+let listManager = new dbList();
 
-router//getting the lists of an user
+router
+    //getting the lists of an user
     .get('/list', function (req, res) {
         res.setHeader('Content-Type', 'application/json');
 
-        listManager.findListByUser(req.session.user._id).then(function (response) {
-            res.send(response);
-            res.end();
-        });
+        listManager.findListByUser(req.session.user._id)
+            .then(function (response) {
+                res.send(response);
+                console.log(response);
+                res.end();
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
     })
 
     .post('/list', function (req, res) {

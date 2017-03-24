@@ -21,7 +21,7 @@
                 controller  : 'SubscribeController'
             })
 
-            .when('/foodList', {
+            .when('/lists', {
                 templateUrl: 'app/modules/listsUser/listsUser.html',
                 controller: 'ListController'
             })
@@ -33,6 +33,10 @@
             .when('/contentList/:id?', {
                 templateUrl: 'app/modules/listContent/contentList.html',
                 controller: 'ContentListController'
+            })
+            .when('/contentListUrl/:url?', {
+                templateUrl: 'app/modules/listContent/contentList.html',
+                controller: 'ListUrlController'
             })
             .otherwise({
                 redirectTo: '/'

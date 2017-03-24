@@ -12,7 +12,7 @@
 
     <script src="/node_modules/angular/angular.js"></script>
     <script src="/node_modules/angular-route/angular-route.js"></script>
-    <script src="/node_modules/socket.io-client/socket.io.js"></script>
+    <script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
     <script src="/app/modules/appCore/homeModule.js"></script>
     <script src="/app/modules/appCore/homeController.js"></script>
     <script src="/app/modules/signin/signinController.js"></script>
@@ -21,6 +21,7 @@
     <script src="/app/modules/listContent/contentListController.js"></script>
     <script src="/app/modules/listsUser/newList.js"></script>
     <script src="/app/modules/urlGenerator/urlGenerator.directive.js"></script>
+    <script src="/app/modules/listUrl/listUrlController.js"></script>
 
 </head>
 <body ng-app = "myApp" ng-controller = "HomeController">
@@ -33,7 +34,7 @@
             </li>
 
             <li role="presentation">
-                <a class="btn btn-default navbar-btn btn-navbar" ng-click="goHome(false, '/foodList')">Homepage</a>
+                <a class="btn btn-default navbar-btn btn-navbar" ng-click="goHome(false, '/lists')">Homepage</a>
             </li>
 
             <li role="presentation">

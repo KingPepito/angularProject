@@ -1,2 +1,6 @@
 voir animation liste (animate.css, bulma)
 faire un tableau d'icone pour les utilisateurs
+directive element tableau
+directive list dans lists user
+$routeParams entre listsuser et listcontent
+bouton partager sur list user, création d'un url sans droit de modif
