@@ -12,6 +12,7 @@
     "helmet": "^3.5.0",
     "http": "0.0.0",
     "mongoose": "^4.6.0",
+    "ngSmoothScroll": "^2.0.1",
     "socket.io": "^1.7.3",
     "when": "^3.7.7"
   },

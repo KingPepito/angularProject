@@ -3,7 +3,7 @@
  */
 (function () {
 
-    angular.module('myApp', ['ngRoute'])
+    angular.module('myApp', ['ngRoute', 'smoothScroll'])
 
     .config(function ($routeProvider){
         $routeProvider

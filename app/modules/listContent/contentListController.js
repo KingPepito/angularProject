@@ -35,13 +35,15 @@
 
             socket.on('refreshUsersList/'+idList, function (message) {
                 console.log("Refreshing the list users connected"+message);
+                console.log(message);
                 setUsersWorking(message);
             });
 
-            socket.on('addUserConnected', function (message) {
-                console.log("Refreshing the list users connected"+message);
-                setUsersWorking(message);
-            });
+            // socket.on('addUserConnected', function (message) {
+            //     console.log("Refreshing the list users connected"+message);
+            //     console.log(message);
+            //     setUsersWorking(message);
+            // });
             console.log("user "+currentUser.pseudo);
 
             console.log("idList "+idList);
@@ -89,25 +91,30 @@
             return(listService.currentList != undefined)
         };
 
-        if(isCurrentListDefined()){
-            //the field for search the list is showed by default
-            idList = listService.currentList._id;
+        let initializeList = function () {
+            if(isCurrentListDefined()){
+                //the field for search the list is showed by default
+                idList = listService.currentList._id;
+            }
+            else{
+                $http.get("/list/last").then(function (res) {
+                    idList = res.data;
+                })
+            }
+
             userService.getCurrentUser()
                 .then(function(user) {
                     currentUser = user;
-                    initializeSocket()} )
-                .then(function() {refreshList()});
-        }
-        else{
-            $http.get("/list/last").then(function (res) {
-                idList = res.data;
-                userService.getCurrentUser()
-                    .then(function(user) {
-                        currentUser = user;
-                        initializeSocket()} )
-                    .then(function() {refreshList()});
-            })
-        }
+                    initializeSocket();
+                    refreshList();
+                    $scope.isGrantUserViewHide = false;
+                })
+                .catch(function() {
+                    refreshList();
+                    $scope.isGrantUserViewHide = true;
+                });
+        }();
+
 
         //refreshing the view of the lists
         $scope.fillList = function(item){
@@ -207,7 +214,6 @@
                if($scope.error == error) { $scope.error = "" }
             }, 5000);
             $scope.$apply();
-            return;
         };
 
        let setUsersWorking = function (userArray) {
@@ -235,12 +241,10 @@
 
         $scope.$on('$locationChangeStart', function( event ) {
             socket.disconnect();
-            console.log("caca");
         });
 
         //tableau containing the fields to edit
         $scope.tabHide = [];
-
         $scope.hideList = false;
         $scope.hideEdit = true;
 

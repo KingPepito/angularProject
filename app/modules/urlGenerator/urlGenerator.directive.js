@@ -15,7 +15,6 @@ angular.module("myApp")
 function urlGenerator() {
 
     let directive = {
-        link: link,
         templateUrl: '/app/modules/urlGenerator/urlGenerator.directive.html',
         restrict: 'EA',
         controller: controllerUrlGenerator
@@ -23,9 +22,6 @@ function urlGenerator() {
 
     return directive;
 
-    function link(scope, http, attrs) {
-
-    }
 }
 
 controllerUrlGenerator.$inject = ['$scope', '$http', '$location'];

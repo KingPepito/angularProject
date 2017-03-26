@@ -32,7 +32,6 @@
 
             socket.on('serverRefresh/'+currentList._id, function (message) {
                 refreshList();
-                $scope.error = message;
             });
 
             console.log("idList "+currentList._id);
@@ -144,7 +143,7 @@
 
         //tableau containing the fields to edit
         $scope.tabHide = [];
-
+        $scope.isGrantUserViewHide = true;
         $scope.hideList = false;
         $scope.hideEdit = true;
 
