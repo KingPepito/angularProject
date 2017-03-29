@@ -38,6 +38,44 @@ let dbListByUrl = function () {
         });
     };
 
+    this.addUrlToList = function (idList) {
+
+        let url = generateUrl();
+
+        ListModel.findOne({_id:idList}, function (err, list) {
+            if (err) { resolve(false); return;}
+
+            list.url = url;
+
+            list.save(function (err) {
+                if(err) {
+                    console.error('ERROR!');
+                    reject(err);
+                }
+                else {
+                    resolve(url);
+                }
+            });
+
+        });
+    };
+
+    this.isListUrlExist = function (idList) {
+
+        return new Promise(function(resolve, reject) {
+            //content
+            ListModel.findOne({_id:idList}, function (err, res) {
+                if (err) { throw err;}
+                // comms est un tableau de hash
+                if(res.url){
+                    resolve(true);
+                }
+                else { resolve(false); }
+            });
+
+        });
+    };
+
     this.findListByUrl = function (url) {
 
         return new Promise(function(resolve, reject) {
@@ -50,8 +88,13 @@ let dbListByUrl = function () {
             });
 
         });
+    };
+
+    //generate random url
+    function generateUrl() {
+        return Math.random().toString(36).slice(2);
     }
-    
+
 };
 
 module.exports = dbListByUrl;

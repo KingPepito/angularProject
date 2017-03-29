@@ -146,7 +146,7 @@
         $scope.isGrantUserViewHide = true;
         $scope.hideList = false;
         $scope.hideEdit = true;
-
+        $scope.isShareListHidden = true;
         $scope.list = [];
 
     }

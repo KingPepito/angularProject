@@ -37,7 +37,7 @@ body{
 .jumbotron{
 	margin-top: 10vh;
 	background-color: inherit;
-	color: whitesmoke;
+	color: #262626;
 }
 
 .panel{
@@ -74,7 +74,32 @@ body{
  	 top: 50%;
  	 left:50%;
   	transform: translate(-50%,-50%);
-  }
+}
+
+.disabled{
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.alert-box{
+	padding: 20px;
+	font-size: x-large;
+	font-family: Gadugi;
+	color: #1b6d85;
+	background-color: #cfd0d6;
+	position: absolute;
+	top: 30%;
+	/*height: 30%;*/
+	/*width: 30vw;*/
+}
+
+.big-url{
+	font-size: 5vh;
+	color: #103a4d;
+	font-family: inherit;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
 
 .navbar-btn{
 	width:150px;
@@ -102,8 +127,12 @@ body{
 	width: 50%;
 }
 
+.list-fiche{
+	margin-bottom: 20px ;
+}
+
 .list-icone{
-	min-width: 150px;
+	/*min-width: 150px;*/
 	height: 200px;
 	border: solid #2D2D2D;
 	border-radius: 5px 5px 0px 0px;
@@ -181,6 +210,22 @@ body{
 
 .btn-subscribe{
 	background-color: rgba(132, 53, 52, 0.47);
+}
+
+.btn-ok{
+	width: 30%;
+	background-color: rgba(234, 234, 248, 0.59);
+	border-color: transparent;
+	border-radius: 5px;
+	color: #2D2D2D;
+}
+
+.btn-ok:hover{
+	width: 30%;
+	background-color: rgba(112, 109, 124, 0.42);
+	border-color: transparent;
+	border-radius: 5px;
+	color: #2D2D2D;
 }
 
 

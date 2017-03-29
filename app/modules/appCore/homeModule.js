@@ -30,7 +30,7 @@
                 templateUrl: 'app/modules/listsUser/listsUser.html',
                 controller: 'ListController'
             })
-            .when('/contentList/:id?', {
+            .when('/contentList/:idList?', {
                 templateUrl: 'app/modules/listContent/contentList.html',
                 controller: 'ContentListController'
             })
@@ -43,11 +43,25 @@
             });
     });
 
-    angular.module("myApp").factory("listService", function(){
-        return {};
+    angular.module("myApp").factory("listService", function($http, $location){
+        let elementsListService = {};
+
+        elementsListService.isUserCanAccessList = function (idUser, list) {
+            return list.usersAllowed.includes(idUser);
+        };
+        
+        elementsListService.getList = function (idList) {
+            $http.get('/list/'+idList, function (list) {
+                
+            })
+        };
+
+        return elementsListService;
+
+
     });
 
-    angular.module("myApp").factory("userService", function($http){
+    angular.module("myApp").factory("userService", function($http, $location){
 
         let listElementService = {};
 

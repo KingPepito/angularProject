@@ -4,14 +4,14 @@
 
 (function () {
 
-    function ContentListController($scope, $http, $timeout, $location, $anchorScroll, listService, userService, randomColor) {
+    function ContentListController($scope, $http, $timeout, $location, $anchorScroll, $routeParams,  listService, userService) {
 
         //TODO: plusieurs var dans differents service
-        let idList;
-        let currentUser;
 
+        let idList = $routeParams.idList;
+        let currentUser;
+        let currentList;
         let usersConnected = [];
-        let idSocket;
 
         // init as a string
         $scope.usersConnected = [];
@@ -62,11 +62,14 @@
             //$scope.list = [];
             $http.get('/list/'+idList).then(function (res) {
 
+                if(!res.data.list){
+                    return;
+                }
                 let newList = res.data.list.content;
 
-                console.log(res);
-                listService = res.data.list;
 
+                currentList = res.data.list;
+                console.log(currentList);
                 //the field for search the list is showed by default
                 $scope.message = "Here is your list: "+res.data.list.name;
 
@@ -86,33 +89,34 @@
             });
         };
 
-        //test to manage if the user refresh the page
-        let isCurrentListDefined = function () {
-            return(listService.currentList != undefined)
-        };
-
+        // Access the list checking if the user is allowed
         let initializeList = function () {
-            if(isCurrentListDefined()){
-                //the field for search the list is showed by default
-                idList = listService.currentList._id;
-            }
-            else{
-                $http.get("/list/last").then(function (res) {
-                    idList = res.data;
-                })
-            }
 
+            //Get the user
             userService.getCurrentUser()
                 .then(function(user) {
+
                     currentUser = user;
+                    console.log(currentUser);
+                    // init the sockets
                     initializeSocket();
                     refreshList();
                     $scope.isGrantUserViewHide = false;
+
+                    //return(true);
+                })
+                .then(function (so) {
+                    //Check if he is allowed to access the list
+                    console.log(currentUser);
+                    let isAccessAllowed = listService.isUserCanAccessList(currentUser._id, currentList);
+
+                    if(!isAccessAllowed){ $location.path("/") }
                 })
                 .catch(function() {
                     refreshList();
                     $scope.isGrantUserViewHide = true;
-                });
+                })
+
         }();
 
 
@@ -239,6 +243,23 @@
             }
         };
 
+        //active desactive the share view
+        $scope.share = function(){
+            $scope.idList = idList;
+            console.log("share");
+            $scope.displayShare();
+        };
+
+        $scope.checkUrl = function (idList) {
+            if(listService.url)
+            $http.get("/")
+        };
+
+        $scope.displayShare = function () {
+            $scope.isShareListHidden = !$scope.isShareListHidden;
+            $scope.classMask = ($scope.isShareListHidden) ? "" : "disabled";
+        };
+
         $scope.$on('$locationChangeStart', function( event ) {
             socket.disconnect();
         });
@@ -247,7 +268,8 @@
         $scope.tabHide = [];
         $scope.hideList = false;
         $scope.hideEdit = true;
-
+        $scope.isShareListHidden = true;
+        $scope.classMask = "";
         $scope.list = [];
 
     }

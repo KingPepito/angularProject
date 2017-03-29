@@ -4,7 +4,7 @@
 (function () {
 
 
-    function ListController($scope, $http, $location, $anchorScroll, listService) {
+    function ListController($scope, $http, $location, $anchorScroll) {
 
         let user;
 
@@ -15,9 +15,6 @@
                 }
             })
         }();
-
-        //variable partagé avec le service 'list'
-        $scope.list = listService;
 
         $http.get('/user')
             .then(function (res) {
@@ -34,18 +31,17 @@
         //create a new list for the current user
         $scope.newList = function (name) {
             $http.post('/list', {name: name})
-                .then(
-                    function (res) {
-                        console.log($scope.listName);
-                        //Clear listname input
-                        $scope.listName = "";
-                        //TODO:directive to replace the include
-                        refreshUserLists();
-                        // the element of the list freshly created
-                        $location.hash(name);
-                        // scroll to it
-                        $anchorScroll();
-                    })
+                .then(function (res) {
+                    console.log($scope.listName);
+                    //Clear listname input
+                    $scope.listName = "";
+                    //TODO:directive to replace the include
+                    refreshUserLists();
+                    // the element of the list freshly created
+                    $location.hash(name);
+                    // scroll to it
+                    $anchorScroll();
+                })
                 .catch(function (err) {
                     console.log(err)
                 })
@@ -65,7 +61,7 @@
 
         //refreshing the user's lists
         let refreshUserLists = function(){
-            //$scope.listList = [];
+
             $http.get('/list')
                 .then(function (res) {
                     console.log(res.data);
@@ -81,8 +77,7 @@
 
         //show the content of a list
         $scope.showList = function (selectedList) {
-            $scope.list.currentList = selectedList;
-            $location.path("/contentList");
+            $location.path("/contentList/"+selectedList._id);
         };
         
         $scope.getNumber = function(num) {

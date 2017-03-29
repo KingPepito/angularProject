@@ -140,6 +140,6 @@ router
                             res.send(err);
                         });
             });
-    });
+    })
 
 module.exports = router;

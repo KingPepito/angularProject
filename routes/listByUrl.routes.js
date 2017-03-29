@@ -29,13 +29,43 @@ router//getting the lists of an user
             });
     })
 
+    //not used yet
+    .get('/list/:id/url', function (req, res) {
+
+        let idList = req.params.id;
+
+        listUrlManager.isListUrlExist(idList)
+            .then(function (isUrlExist) {
+                console.log("url exist? "+isUrlExist);
+                res.send(isUrlExist);
+            });
+    })
+
     .post('/list/url', function (req, res) {
 
-        listUrlManager.newUrlList("mabite")
+        listUrlManager.newUrlList("list test")
             .then(function (url) {
                 console.log("url"+url);
                 res.send(url);
             });
+    })
+
+    .post('/list/:idList/generateUrl', function (req,res) {
+        if(!req.params.idList) { res.status(500).json({ error: 'A problem as been detected' }) }
+
+        const idList = req.params.idList;
+
+        listUrlManager.addUrlToList(idList)
+            .then(function (url) {
+                res.send(url)
+            })
+            .catch(function (err) {
+                console.log(err);
+                res.send("An error occured please retry later")
+            });
     });
+
+
+
 //TODO: last modification
 module.exports = router;

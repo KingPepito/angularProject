@@ -11,7 +11,7 @@
         <div class="panel-body" >
             <div class = 'row'>
                 <div ng-repeat="list in listList | filter: {name: item}" >
-                    <div class="center-block col-lg-2 col-xs-10" style="display: inline-block; margin: 20px" id="{{list.name}}">
+                    <div class="list-fiche col-lg-2 col-lg-offset-0 col-xs-10 col-xs-offset-1" id="{{list.name}}">
                         <div class="clickable list-icone" ng-click="showList(list)" >
 
                             <h3 class="text-center">{{list.name}}</h3>
