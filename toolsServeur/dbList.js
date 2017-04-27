@@ -6,6 +6,9 @@
 
 //importing mongoose
 let mongoose = require('mongoose');
+//Using ES6 promise instead of native Mongoose promise
+mongoose.Promise = Promise;
+
 let when = require('when');
 
 let listManager = function () {

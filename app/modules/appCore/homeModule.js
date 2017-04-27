@@ -3,7 +3,7 @@
  */
 (function () {
 
-    angular.module('myApp', ['ngRoute', 'smoothScroll'])
+    angular.module('myApp', ['ngRoute', 'smoothScroll', 'angular-clipboard'])
 
     .config(function ($routeProvider){
         $routeProvider
@@ -15,18 +15,11 @@
                 templateUrl : 'app/modules/signin/signin.html',
                 controller  : 'SigninController'
             })
-
             .when('/subscribe', {
                 templateUrl : 'app/modules/subscribe/subscribe.html',
                 controller  : 'SubscribeController'
             })
-
             .when('/lists', {
-                templateUrl: 'app/modules/listsUser/listsUser.html',
-                controller: 'ListController'
-            })
-
-            .when('/foodList/:user?', {
                 templateUrl: 'app/modules/listsUser/listsUser.html',
                 controller: 'ListController'
             })
@@ -51,8 +44,21 @@
         };
         
         elementsListService.getList = function (idList) {
-            $http.get('/list/'+idList, function (list) {
-                
+            return new Promise(function(resolve, reject){
+                $http.get('/list/'+idList)
+                    .then(function (res) {
+                        resolve(res.data.list);
+                    })
+            })
+        };
+
+        elementsListService.addUrl = function (idList) {
+            return new Promise(function(resolve, reject){
+                $http.put('list/'+ idList +'/generateUrl')
+                    .then(function (res) {
+                        resolve(res.data);
+                        alert(res.data);
+                    })
             })
         };
 
@@ -66,7 +72,7 @@
         let listElementService = {};
 
         listElementService.getCurrentUser = function (idList, element) {
-            let promise = new Promise( function(resolve, reject){
+            return new Promise( function(resolve, reject){
                 $http.get('/user')
                     .then(function (res) {
                         if(res.data.user == ""){
@@ -78,7 +84,6 @@
                         }
                     })
             });
-            return promise;
         };
 
         listElementService.grantUser = function (user, idList) {

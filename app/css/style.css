@@ -89,6 +89,7 @@ body{
 	background-color: #cfd0d6;
 	position: absolute;
 	top: 30%;
+	border-radius: 10px;
 	/*height: 30%;*/
 	/*width: 30vw;*/
 }
@@ -143,10 +144,10 @@ body{
 
 .element-list{
 	background-color: #fafafa;
-	animation: fadein 2s;
-	-moz-animation: fadein 2s; /* Firefox */
-	-webkit-animation: fadein 2s; /* Safari et Chrome */
-	-o-animation: fadein 2s;
+	/*animation: fadein 2s;*/
+	/*-moz-animation: fadein 2s; !* Firefox *!*/
+	/*-webkit-animation: fadein 2s; !* Safari et Chrome *!*/
+	/*-o-animation: fadein 2s;*/
 }
 
 @keyframes fadein {
@@ -203,6 +204,10 @@ body{
 	margin-top: 5vh;
 }
 
+.menu-list{
+	margin-top: 100px;
+}
+
 .btn-signin{
 	background-color: rgba(27, 109, 133, 0.39);
 
@@ -213,6 +218,7 @@ body{
 }
 
 .btn-ok{
+	margin-top: 20px;
 	width: 30%;
 	background-color: rgba(234, 234, 248, 0.59);
 	border-color: transparent;
@@ -228,21 +234,105 @@ body{
 	color: #2D2D2D;
 }
 
-
-.btn-trash-hover{
-	width: 40px;
+.btn-share{
+	margin: 0px;
+	width: 50px;
+	height: 50px;
+	background-image: url("/app/img/shareIcon.png");
+	/*background-color: #1b6d85;*/
+	background-size: cover;
 }
 
-.btn-trash-hover:hover
+.btn-share:hover{
+
+	-webkit-filter: invert(50%);
+	-moz-filter: invert(50%);
+	-o-filter: invert(50%);
+	-ms-filter: invert(50%);
+
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+
+}
+
+.btn-edit{
+	border-radius: 5px;
+	margin-right: 5px;
+	width: 40px;
+	height: 40px;
+	background-image: url("/app/img/iconEdit.png");
+	background-color: #e7d634;
+	background-size: cover;
+}
+
+.btn-edit:hover{
+	-webkit-filter: brightness(1.1);
+	-moz-filter: brightness(1.1);
+	-o-filter: brightness(1.1);
+
+	filter: brightness(1.1);
+
+	transform: translateY(-6px);
+
+	box-shadow: 0px 6px rgba(0, 0, 0, 0.7),
+	0px 5px rgba(198, 198, 198, 0.7);
+
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+	transition-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.btn-copy{
+	height: 43px;
+	width: 43px;
+	background-size: cover;
+	background-color:  snow;
+	border-radius: 0 5px 5px 0;
+	border: thin;
+	background-image: url("/app/img/iconCopy.png");
+}
+
+.btn-copy:hover{
+	background-color: rgba(112, 109, 124, 0.42);
+}
+
+
+.btn-trash{
+	border-radius: 5px;
+	margin-right: 5px;
+	width: 40px;
+	height: 40px;
+	background-image: url("/app/img/iconTrash.png");
+	background-size: cover;
+}
+
+.btn-trash:hover
 {
-	-moz-box-shadow: 0 0 15px #2d2d2d;
-	-webkit-box-shadow: 0 0 15px #2D2D2D;
-	box-shadow: 0 0 15px #2D2D2D;
+	-webkit-filter: brightness(1.1);
+	-moz-filter: brightness(1.1);
+	-o-filter: brightness(1.1);
+
+	filter: brightness(1.1);
+
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+
+	transform: translateY(-6px);
+
+	box-shadow: 0px 6px rgba(0, 0, 0, 0.7),
+				0px 5px rgba(198, 198, 198, 0.7);
 }
 
 .iconUser
 {
 	border: inset 5px;
+	border-radius: 5px;
 	width: 35px;
 	height: 35px;
 	line-height: 25px;

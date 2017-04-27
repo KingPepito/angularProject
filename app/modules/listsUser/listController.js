@@ -35,7 +35,6 @@
                     console.log($scope.listName);
                     //Clear listname input
                     $scope.listName = "";
-                    //TODO:directive to replace the include
                     refreshUserLists();
                     // the element of the list freshly created
                     $location.hash(name);

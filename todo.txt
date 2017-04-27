@@ -10,3 +10,6 @@ avis code couleur sur chaque élément
 Fix non actualisation premier élément ajouté
 set a password
 Directive: error, users connected, add, edit, line
+créer dossier model avec les schemas
+fichier connect Mongoose (actuellement connexion est dans dbUser)
+socketIO start/stop quand l'user est sur la page ou pas

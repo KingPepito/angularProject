@@ -32,7 +32,7 @@
                             }
                         );
                     //accessing to the user's list
-                    $location.path("/foodList");
+                    $location.path("/lists");
                 }
                 else{
                     $scope.error = response.data;

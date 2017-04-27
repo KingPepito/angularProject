@@ -3,6 +3,8 @@
  */
 //TODO: declare schema in a extern file
 let mongoose = require("mongoose");
+//Using ES6 promise instead of native Mongoose promise
+mongoose.Promise = Promise;
 
 let dbListByUrl = function () {
 
@@ -40,24 +42,27 @@ let dbListByUrl = function () {
 
     this.addUrlToList = function (idList) {
 
-        let url = generateUrl();
+        return new Promise(function (resolve, reject) {
+            let url = generateUrl();
 
-        ListModel.findOne({_id:idList}, function (err, list) {
-            if (err) { resolve(false); return;}
+            ListModel.findOne({_id:idList}, function (err, list) {
+                if (err) { resolve(false); return;}
 
-            list.url = url;
+                list.url = url;
 
-            list.save(function (err) {
-                if(err) {
-                    console.error('ERROR!');
-                    reject(err);
-                }
-                else {
-                    resolve(url);
-                }
+                list.save(function (err) {
+                    if(err) {
+                        console.error('ERROR!');
+                        reject(err);
+                    }
+                    else {
+                        resolve(url);
+                    }
+                });
+
             });
-
         });
+
     };
 
     this.isListUrlExist = function (idList) {

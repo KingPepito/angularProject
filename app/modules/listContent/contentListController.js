@@ -4,7 +4,7 @@
 
 (function () {
 
-    function ContentListController($scope, $http, $timeout, $location, $anchorScroll, $routeParams,  listService, userService) {
+    function ContentListController($scope, $http, $timeout, $location, $anchorScroll, $routeParams,  listService, userService, smoothScroll) {
 
         //TODO: plusieurs var dans differents service
 
@@ -15,8 +15,6 @@
 
         // init as a string
         $scope.usersConnected = [];
-
-        //TODO: mettre dans un service
 
         let socket = io.connect();
 
@@ -39,15 +37,9 @@
                 setUsersWorking(message);
             });
 
-            // socket.on('addUserConnected', function (message) {
-            //     console.log("Refreshing the list users connected"+message);
-            //     console.log(message);
-            //     setUsersWorking(message);
-            // });
             console.log("user "+currentUser.pseudo);
 
             console.log("idList "+idList);
-
 
             socket.emit('setUserToList', {
                 username: currentUser.pseudo,
@@ -60,61 +52,72 @@
         let refreshList = function(isEmitingToOthers){
             $scope.addContent = "";
             //$scope.list = [];
-            $http.get('/list/'+idList).then(function (res) {
+            listService.getList(idList)
+                .then(function (list) {
 
-                if(!res.data.list){
-                    return;
-                }
-                let newList = res.data.list.content;
+                    if(!list){
+                        return;
+                    }
+                    console.log(list);
 
+                    // get the new content of the list
+                    let newList = list.content;
 
-                currentList = res.data.list;
-                console.log(currentList);
-                //the field for search the list is showed by default
-                $scope.message = "Here is your list: "+res.data.list.name;
+                    currentList = list;
+                    //the field for search the list is showed by default
+                    $scope.message = "Here is your list: "+list.name;
 
-                //Update the list
-                newList.forEach(function (element, index) {
-                    if(newList[index] != $scope.list[index]){
-                        updateElementFromList(newList[index], index);
+                    //Update the list
+                    newList.forEach(function (element, index) {
+                        if(newList[index] != $scope.list[index]){
+                            updateElementFromList(newList[index], index);
+                        }
+                    });
+
+                    //deleting the last element if an element have been deleted
+                    while(newList.length < $scope.list.length) {$scope.list.pop();}
+
+                    // $scope.apply is necessary when using promise in a service...
+                    // Don't know why
+                    $scope.$apply();
+
+                    if(isEmitingToOthers == true){
+                        socket.emit('clientRefresh', {idList:idList});
                     }
                 });
-
-                //deleting the last element if an element have been deleted
-                while(newList.length < $scope.list.length) {$scope.list.pop();}
-
-                if(isEmitingToOthers == true){
-                    socket.emit('clientRefresh', {idList:idList});
-                }
-            });
         };
 
         // Access the list checking if the user is allowed
         let initializeList = function () {
 
-            //Get the user
-            userService.getCurrentUser()
+            //Get the list
+            listService.getList(idList)
+                .then(function (list) {
+                    currentList = list;
+                })
+                //Get the user
+                .then(function () {
+                    return userService.getCurrentUser()
+                })
+                //Init the list, the sockets, and the view
                 .then(function(user) {
-
                     currentUser = user;
                     console.log(currentUser);
-                    // init the sockets
                     initializeSocket();
                     refreshList();
                     $scope.isGrantUserViewHide = false;
-
-                    //return(true);
                 })
-                .then(function (so) {
-                    //Check if he is allowed to access the list
-                    console.log(currentUser);
-                    let isAccessAllowed = listService.isUserCanAccessList(currentUser._id, currentList);
 
-                    if(!isAccessAllowed){ $location.path("/") }
-                })
                 .catch(function() {
                     refreshList();
                     $scope.isGrantUserViewHide = true;
+                })
+                //Check if user is allowed to access the list
+                .then(function () {
+                    console.log(currentUser);
+                    let isAccessAllowed = listService.isUserCanAccessList(currentUser._id, currentList);
+                    console.log(isAccessAllowed);
+                    if(!isAccessAllowed){ $location.path("/") }
                 })
 
         }();
@@ -151,10 +154,19 @@
 
         //delete an element from a list
         $scope.deleteElementFromList = function (element) {
+            console.log("jedelete"+element);
+
+            $scope.classLine[element] = "bounceOut";
+
             $http.delete('/list/'+idList+'/element/'+element)
                 .then(
                     function (res) {
-                        refreshList(true);
+                        //Set a little delay cause to avoid the animation to execut on the next line,
+                        //the first animation bounceIn last 0.75 sec
+                        setTimeout(function () {
+                            refreshList(true);
+                            $scope.classLine[element] = "bounceIn";
+                        },750);
                     },
                     function (err) {
                         showError("An error occured while deleting this item, please try later")
@@ -225,9 +237,6 @@
            usersConnected = userArray;
            //Add the array into the view
            usersConnected.forEach(function (user) {
-               //TODO: generate icon
-               // $scope.usersConnected += " " + element;
-               //$scope.usersConnected.push(username);
                $scope.usersConnected.push(generateIcon(user));
                console.log("element"+user.username);
            });
@@ -245,19 +254,32 @@
 
         //active desactive the share view
         $scope.share = function(){
+            let domain = "localhost:1337/#!/contentListUrl/";
+
             $scope.idList = idList;
             console.log("share");
-            $scope.displayShare();
+            if ($scope.isUrlExist()){
+                $scope.urlList = domain + currentList.url;
+                refreshList();
+                $scope.displayShare();
+            }
+            else { listService.addUrl(idList).then(function (url) {
+                $scope.urlList = domain + url;
+                $scope.displayShare();
+            })}
+
         };
 
-        $scope.checkUrl = function (idList) {
-            if(listService.url)
-            $http.get("/")
+        $scope.isUrlExist = function () {
+            return(currentList.url != null);
         };
 
         $scope.displayShare = function () {
             $scope.isShareListHidden = !$scope.isShareListHidden;
             $scope.classMask = ($scope.isShareListHidden) ? "" : "disabled";
+
+            let element = document.getElementById('share');
+            smoothScroll(element);
         };
 
         $scope.$on('$locationChangeStart', function( event ) {
@@ -265,10 +287,13 @@
         });
 
         //tableau containing the fields to edit
+        //TODO: système pour mettre tout dans un seul tableau
         $scope.tabHide = [];
+        $scope.classLine = [];
+
         $scope.hideList = false;
         $scope.hideEdit = true;
-        $scope.isShareListHidden = true;
+        $scope.isShareListHidden = true;    
         $scope.classMask = "";
         $scope.list = [];
 

@@ -3,6 +3,10 @@
  */
 //importing mongoose
 var mongoose = require('mongoose');
+
+//Using ES6 promise instead of native Mongoose promise
+mongoose.Promise = Promise;
+
 var when = require('when');
 exports.dbList = require("./dbList.js");
     

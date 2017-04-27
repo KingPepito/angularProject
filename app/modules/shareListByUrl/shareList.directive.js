@@ -11,7 +11,7 @@ function shareList() {
         templateUrl:"/app/modules/shareListByUrl/shareList.directive.html",
         restrict: 'E',
         scope: {
-            idList: '=',
+            urlList: '=',
             displayShare: '='
         },
         controller: ShareDirectiveController,
@@ -23,11 +23,21 @@ function shareList() {
     return directive;
 }
 
-ShareDirectiveController.$inject = ['$scope', '$http'];
+ShareDirectiveController.$inject = ['$scope', '$http', 'clipboard'];
 
-function ShareDirectiveController ($scope, $http) {
+function ShareDirectiveController ($scope, $http, clipboard) {
 
     let vm = this;
+
+    if (!clipboard.supported) {
+        console.log('Sorry, copy to clipboard is not supported');
+    }
+
+    $scope.copyToClipboard = function(){
+        clipboard.copyText(vm.urlList);
+    };
+
+    //vm.clickHandler();
 
     function checkUrl () {
         console.log("check");

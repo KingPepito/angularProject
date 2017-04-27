@@ -43,20 +43,21 @@ router//getting the lists of an user
 
     .post('/list/url', function (req, res) {
 
-        listUrlManager.newUrlList("list test")
+        listUrlManager.newUrlList("test")
             .then(function (url) {
                 console.log("url"+url);
                 res.send(url);
             });
     })
 
-    .post('/list/:idList/generateUrl', function (req,res) {
+    .put('/list/:idList/generateUrl', function (req,res) {
         if(!req.params.idList) { res.status(500).json({ error: 'A problem as been detected' }) }
 
         const idList = req.params.idList;
 
         listUrlManager.addUrlToList(idList)
             .then(function (url) {
+                console.log("new url: "+url);
                 res.send(url)
             })
             .catch(function (err) {
