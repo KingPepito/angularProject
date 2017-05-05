@@ -1,22 +1,21 @@
-<div class="jumbotron">
+<div class="col-xs-8 col-xs-offset-2 form-signin animated slideInDown text-center">
+    <div class="panel-body ">
 
-    <h2>Subscribe</h2>
-    <h2>Please enter your information here :</h2>
-    <form ng-submit="subscribe(idUser, password, email)">
-        <p>Identifiant</p>
-        <input type="text" ng-model="idUser">
-        <p>Password</p>
-        <input type="password" ng-model="password">
-        <p>Password again</p>
-        <input type="password" ng-model="password2">
-        <p>E-mail</p>
-        <input type="email" ng-model="email">
-        <p><input type="submit"></p>
-    </form>
-    <h3>
-        {{message}}
-        {{error}}
-    </h3>
+        <h2>Subscribe</h2>
+        <h3>Please enter your information here :</h3>
+        <form ng-submit="subscribe()">
+            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.idUser" label="Id" ></input-signin>
+            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.password" type-input="'password'" label="Password" ></input-signin>
+            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.password2" type-input="'password'" label="Password again" ></input-signin>
+            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.email" label="Email" ></input-signin>
+            <input class="btn btn-default group col-lg-2 col-lg-offset-5" type="submit" value="Subscribe">
+        </form>
+        <h3>
+            {{message}}
+            {{error}}
+        </h3>
+    </div>
+
 </div>
 
 

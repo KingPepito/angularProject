@@ -1,10 +1,10 @@
-voir animation liste (animate.css, bulma)
-faire un tableau d'icone pour les utilisateurs
-directive element tableau
+ORIENTATION
+
+Une todo list simple épurée, des fonctionnalités simples et efficaces
+
+TODO
+
 directive list dans lists user
-$routeParams entre listsuser et listcontent
-bouton partager sur list user, création d'un url sans droit de modif
-titre : "List." ou "the List."
 son notifs
 avis code couleur sur chaque élément
 Fix non actualisation premier élément ajouté
@@ -13,3 +13,24 @@ Directive: error, users connected, add, edit, line
 créer dossier model avec les schemas
 fichier connect Mongoose (actuellement connexion est dans dbUser)
 socketIO start/stop quand l'user est sur la page ou pas
+fixer le côté liste partagée par url, le contrôleur n'est pas le meme, pe mettre plus de directives
+ou dans contentListController mettre un mode protégée/plein pouvoir
+bouton on/off sound
+permettre au user de choisir un thème / set de couleurs pour l'app
+virer bouton edit et edit direct dans le champs?
+disparition en 5 secondes, ou on a la possibilité d'annuler
+possibilité agrandir les element liste
+switché deconnect en connect quand pas co
+email de verif
+fixer inscription
+
+
+DONE
+
+titre : "List." ou "the List."
+$routeParams entre listsuser et listcontent
+?animation seulement du côté de celui qui a instantié le changement
+voir animation liste (animate.css, bulma)
+faire un tableau d'icone pour les utilisateurs
+directive element tableau
+bouton partager sur list user, création d'un url sans droit de modif

@@ -9,13 +9,13 @@
         //TODO: plusieurs var dans differents service
 
         let idList = $routeParams.idList;
+        $scope.idList = idList;
         let currentUser;
         let currentList;
         let usersConnected = [];
 
         // init as a string
         $scope.usersConnected = [];
-
         let socket = io.connect();
 
         // Connect to the Socket.IO and init the path
@@ -27,8 +27,7 @@
             });
 
             socket.on('serverRefresh/'+idList, function (message) {
-                refreshList();
-                $scope.message = message;
+                refreshList(false, message.animation);
             });
 
             socket.on('refreshUsersList/'+idList, function (message) {
@@ -49,7 +48,7 @@
 
         //refreshing the content of the lists
         //use emiting as True to refresh other user on the same list
-        let refreshList = function(isEmitingToOthers){
+        let refreshList = function(isEmitingToOthers, animation){
             $scope.addContent = "";
             //$scope.list = [];
             listService.getList(idList)
@@ -60,6 +59,9 @@
                     }
                     console.log(list);
 
+                    //set a bool to apply the animation to the element changed
+                    let isAnimationApplied = false;
+
                     // get the new content of the list
                     let newList = list.content;
 
@@ -69,8 +71,23 @@
 
                     //Update the list
                     newList.forEach(function (element, index) {
+                        //Update only the changed items
                         if(newList[index] != $scope.list[index]){
+                            initializeParameterList(index);
+
+                            console.log("anim: "+animation);
+                             if(animation && !isAnimationApplied){
+
+                                 $scope.elementsList[index].animation = animation;
+                                 isAnimationApplied = true;
+                                 //Reset the animation after 750 ms
+                                 setTimeout(function () {
+                                     // updateElementFromList(newList[index], index);
+                                     $scope.elementsList[index].animation = "";
+                                 }, 750);
+                             }
                             updateElementFromList(newList[index], index);
+
                         }
                     });
 
@@ -82,10 +99,16 @@
                     $scope.$apply();
 
                     if(isEmitingToOthers == true){
-                        socket.emit('clientRefresh', {idList:idList});
+                        socket.emit('clientRefresh', {
+                            idList:idList,
+                            animation: animation
+                        });
                     }
                 });
         };
+
+        //To pass the parameter to the directive element-list
+        $scope.refreshList = refreshList;
 
         // Access the list checking if the user is allowed
         let initializeList = function () {
@@ -131,7 +154,7 @@
             $scope.item = null;
         };
 
-        //refreshing the view of the lists
+        //changing the content of a list element
         let updateElementFromList = function(newItem, id){
             console.log("newItem"+newItem);
             //synchro for the view
@@ -146,44 +169,13 @@
                 .then(
                     function (res) {
                         refreshList(true);
+                        socket.emit('clientRefresh', {
+                            idList:idList,
+                            animation: "bounceIn"
+                        });
                     },
                     function (err) {
                         showError("An error occured please try again later")
-                    })
-        };
-
-        //delete an element from a list
-        $scope.deleteElementFromList = function (element) {
-            console.log("jedelete"+element);
-
-            $scope.classLine[element] = "bounceOut";
-
-            $http.delete('/list/'+idList+'/element/'+element)
-                .then(
-                    function (res) {
-                        //Set a little delay cause to avoid the animation to execut on the next line,
-                        //the first animation bounceIn last 0.75 sec
-                        setTimeout(function () {
-                            refreshList(true);
-                            $scope.classLine[element] = "bounceIn";
-                        },750);
-                    },
-                    function (err) {
-                        showError("An error occured while deleting this item, please try later")
-                    })
-        };
-
-        //edit an element from a list
-        $scope.editElementFromList = function (element, newValue) {
-            $http.put('/list/'+idList+'/element/'+element, { newValue:newValue })
-                .then(
-                    function (res) {
-                        $scope.showEdit(element);
-                        refreshList(true);
-                    },
-                    function (err) {
-                        
-                        showError("An error occured while editing this item, please try later")
                     })
         };
 
@@ -206,7 +198,8 @@
         };
 
         $scope.showEdit = function (index) {
-            $scope.tabHide[index] = (!$scope.tabHide[index]);
+            // $scope.tabHide[index] = (!$scope.tabHide[index]);
+            $scope.elementsList[index].editing = !$scope.elementsList[index].editing;
         };
 
 
@@ -256,7 +249,6 @@
         $scope.share = function(){
             let domain = "localhost:1337/#!/contentListUrl/";
 
-            $scope.idList = idList;
             console.log("share");
             if ($scope.isUrlExist()){
                 $scope.urlList = domain + currentList.url;
@@ -291,7 +283,25 @@
         $scope.tabHide = [];
         $scope.classLine = [];
 
+        $scope.elementsList = [];
+
         $scope.hideList = false;
+
+        let initializeParameterList = function (index) {
+            // $scope.list.forEach(function (element) {
+            //     console.log(element);
+            // });
+
+            $scope.elementsList[index] = {
+                animation : "bounceIn",
+                editing : false
+            };
+
+            setTimeout(function () {
+                // updateElementFromList(newList[index], index);
+                $scope.elementsList[index].animation = "";
+            }, 750);
+        };
         $scope.hideEdit = true;
         $scope.isShareListHidden = true;    
         $scope.classMask = "";

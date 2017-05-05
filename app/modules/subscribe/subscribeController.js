@@ -7,17 +7,17 @@
     function SubscribeController($scope, $http, $q, $location) {
 
 
-        $scope.subscribe = function (user, pass, email) {
-
-            checkForm($scope.password, $scope.password2, $scope.idUser, $scope.email).then(function () {
+        $scope.subscribe = function () {
+            console.log($scope.formData);
+            checkForm($scope.formData.password, $scope.formData.password2, $scope.formData.idUser, $scope.formData.email).then(function () {
 
                     $http({
                         method: 'POST',
                         url: '/subscribe',
                         data: {
-                            username : user,
-                            pw : pass,
-                            email : email
+                            username : $scope.formData.user,
+                            pw : $scope.formData.password,
+                            email : $scope.formData.email
                         }
                     }).then(function successCallback(response) {
                         console.log("subscribe success");
@@ -37,29 +37,27 @@
 
         var checkForm = function (password, password2, id, email) {
 
-            var deferred = $q.defer();
+            return new Promise(function (resolve, reject) {
 
-            if(password == null){
-                deferred.reject("Please enter a valid password");
-            }
-            else if(password.length < 6 && password != ""){
-                deferred.reject("Password too short")
-            }
-            else if(password != password2){
-                deferred.reject("Warning both password are different");
-            }
-            else if(id == null || email == null){
-                deferred.reject("Warning one or more fields are empty");
-            }
-            else
-            {
-                deferred.resolve(true);
-            }
+                if(password == null){
+                    reject("Please enter a valid password");
+                }
+                else if(password.length < 6 && password != ""){
+                    reject("Password too short")
+                }
+                else if(password != password2){
+                    reject("Warning both password are different");
+                }
+                else if(id == null || email == null){
+                    reject("Warning one or more fields are empty");
+                }
+                else
+                {
+                    resolve(true);
+                }
 
-            return deferred.promise;
+            });
         };
-
-
 
 
         $scope.formData = {};

@@ -1,17 +1,17 @@
 
 <div class="container">
 
-    <div class="panel panel-default">
-        <div class="panel-heading" style="height: 60px">
+    <div class="">
+        <div class="panel-heading">
             <form  class="form-inline" ng-model="listForm" ng-hide="searchListView">
-                <h3 class="panel-title form-group">{{message}}</h3>
+                <h2 class="form-group">{{message}}</h2>
                 <input class="form-control" style="float: right;" type="text" ng-model="item" placeholder="search a list"/>
             </form>
         </div>
         <div class="panel-body" >
-            <div class = 'row'>
+            <div class ='row animated bounceInRight' >
                 <div ng-repeat="list in listList | filter: {name: item}" >
-                    <div class="list-fiche col-lg-2 col-lg-offset-0 col-xs-10 col-xs-offset-1" id="{{list.name}}">
+                    <div class="list-fiche col-lg-2 col-lg-offset-0 col-xs-8 col-xs-offset-2 " id="{{list.name}}">
                         <div class="clickable list-icone" ng-click="showList(list)" >
 
                             <h3 class="text-center">{{list.name}}</h3>

@@ -72,11 +72,11 @@ router
         var pw = req.body.pw;
         var email = req.body.email;
 
-        mailLibs.newMailer().then(function (mailManager) {
+        // mailLibs.newMailer().then(function (mailManager) {
             userManager.userExist(user,function (isExist) {
                 if(isExist == false){
                     userManager.addUser(user, pw, email);
-                    mailManager.sendMail();
+                    // mailManager.sendMail();
                     res.end("User "+user+" succefully created");
                 }
                 else{
@@ -84,7 +84,7 @@ router
                     res.status(500).send("User "+user+" already exists!");
                 }
             });
-        });
+        // });
     })
 
     .get('/allUsers', function (req, res) {

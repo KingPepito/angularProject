@@ -6,81 +6,65 @@
 
             <div class="panel-title ">
                 <div class="container">
-                    <div class="col-xs-10" >
+                    <div class="col-xs-11" >
                         <h2>
                             {{message}}
                         </h2>
                     </div>
-                    <div class="col-xs-2 btn btn-share" ng-click="share()"></div>
+                    <div class="col-xs-1 btn btn-share" ng-click="share()"></div>
                 </div>
             </div>
 
         </div>
 
         <div class="panel-body">
-            <table class="table table-bordered">
-                <tr class="text-center" ng-repeat="element in list track by $index">
-
-                    <td ng-model="form" class="element-list animated bounceIn" ng-class="classLine[{{$index}}]">
-
-                        <div ng-model="form.element" class="font-app">
-
-                            <div class="col-lg-10">
-                                {{element}}
-                            </div>
-                            <div class="text-center col-lg-1 pull-left" ng-hide="tabHide[$index]">
-                                <div ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-edit pull-right marged-right">
-                                </div>
-                            </div>
-                            <div class="text-center col-lg-1 pull-right" ng-hide="tabHide[$index]">
-                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-trash pull-right marged-right">
-                                </div>
-                            </div>
-
-
-
-                            <form  class="form-inline col-lg-1" ng-submit="editElementFromList($index, newValue)" ng-hide="!tabHide[$index]">
-                                <input type="text" class="input-round" ng-model="newValue">
-                                <img ng-click="deleteElementFromList($index)" src="app/img/iconTrash.png" class="btn-trash pull-right marged-right">
-                                <div ng-click="showEdit($index)" src="app/img/iconEdit.jpg" class="btn-edit pull-right marged-right"></div>
-                            </form>
-
-                        </div>
+            <table class="list table table-bordered">
+                <tr class="text-center element-list" ng-repeat="element in list track by $index">
+                    
+                    <td ng-model="elementsList[$index]" class="animated " ng-class="elementsList[$index].animation">
+                        <element-list index="$index" id-list="idList" refresh-list="refreshList" content="element"></element-list>
                     </td>
+
                 </tr>
             </table>
 
+            <hr class="col-lg-4 col-lg-offset-4">
 
-            <div class="menu-list">
-                <div class="center-form">
-                    <h2 class="text-center">Menu</h2>
-                    <form ng-submit="addElementToList(addContent)">
-                        <input class="input-round" type="text" ng-model="addContent" placeholder=" Add element"/>
-                        <input type="submit" class="btn btn-default submit-btn" value="Add" />
+            <div class="menu-list col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+                <div class="col-xs-12">
+                    <h2 class="text-center">
+                    </h2>
+
+                    <form ng-submit="addElementToList(addContent)" class="">
+                        <input class="input-round col-xs-6" type="text" ng-model="addContent" placeholder=" Add element"/>
+                        <input type="submit" class="btn btn-default submit-btn col-xs-6" value="Add" />
                     </form>
                 </div>
 
                 <div ng-hide="isGrantUserViewHide">
 
-                    <form ng-submit="grantUser(userToGrant)">
-                        <select class="input-round" ng-model="userToGrant" >
+                    <form class="col-xs-12" ng-submit="grantUser(userToGrant)">
+                        <select class="input-round col-xs-6" ng-model="userToGrant" >
                             <option ng-repeat="user in listUsers">{{user.pseudo}}</option>
                         </select>
-                        <input type="submit" class="btn btn-default submit-btn" value="Grant an User">
+                        <input type="submit" class="btn btn-default submit-btn col-xs-6" value="Grant an User">
                     </form>
 
                     <p style="color:#ac2925" id="error"> {{error}} </p>
 
-                    <h3 > Users connected: </h3>
-                    <div ng-repeat="user in usersConnected track by $index" style="display: inline-block">
-                        <div class="iconUser"
-                             style="color: rgb({{user.color.r}}, {{user.color.g}}, {{user.color.b}});
+                    <div class="col-xs-12">
+
+                        <h3 > Users connected: </h3>
+                        <div ng-repeat="user in usersConnected track by $index" style="display: inline-block">
+                            <div class="iconUser"
+                                 style="color: rgb({{user.color.r}}, {{user.color.g}}, {{user.color.b}});
                             border-color: rgb({{user.color.r}}, {{user.color.g}}, {{user.color.b}});
                             margin:5px"
-                        >
-                            {{user.initials}}
-                            <!--info popup-->
-                            <span>{{user.username}}</span>
+                            >
+                                {{user.initials}}
+                                <!--info popup-->
+                                <span>{{user.username}}</span>
+                            </div>
                         </div>
                     </div>
 
@@ -94,6 +78,6 @@
 </div>
 
 
-<share-list url-list='urlList' display-share="displayShare" ng-hide="isShareListHidden">
+<share-list class="container" url-list='urlList' display-share="displayShare" ng-hide="isShareListHidden">
 
 </share-list>

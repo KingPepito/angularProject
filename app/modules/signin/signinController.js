@@ -9,14 +9,15 @@
     function SigninController($scope, $http, $interval, $location) {
 
         
-        $scope.connexion = function (user, pass) {
-
+        $scope.connexion = function (user, password) {
+            console.log(user);
+            console.log(password);
             $http({
                 method: 'POST',
                 url: '/connexion',
                 data: {
                     username : user,
-                    pw : pass
+                    pw : password
                 }
             }).then(function successCallback(response) {
                 if(response.data == "true"){
@@ -43,8 +44,10 @@
 
         };
 
-        $scope.formData = {};
-        $scope.formData2 = {};
+        $scope.formData = {
+            id: "",
+            pw: ""
+        };
 
     }
 

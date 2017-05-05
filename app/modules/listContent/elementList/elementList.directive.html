@@ -1,0 +1,21 @@
+
+    <div class="font-app animated " ng-class="vm.animation" ng-mouseenter="vm.switchMenuVisibility(true)" ng-mouseleave="vm.switchMenuVisibility(false)">
+
+        <form ng-submit="vm.editElementFromList(vm.index, newValue)" class=" ">
+
+            <div class="col-xs-12 element-list">
+                <div class="col-xs-8 col-xs-offset-2" ng-hide="elementsList.editing">{{vm.content}}</div>
+
+                <input ng-hide="!elementsList.editing" type="text" class="input-lg col-xs-8 col-xs-offset-2" ng-model="newValue">
+
+                <div class="col-xs-2 animated" ng-class="vm.animationMenu" >
+                    <div ng-click="vm.deleteElementFromList($index)" class="btn-delete pull-right marged-right"></div>
+                    <div ng-click="vm.showEdit()"  class="btn-edit pull-right marged-right"></div>
+                </div>
+            </div>
+            <!--<hr class="col-xs-4 col-xs-offset-4">-->
+        </form>
+
+
+
+    </div>

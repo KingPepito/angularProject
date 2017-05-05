@@ -1,7 +1,7 @@
 .bouncing-btn{
   position:absolute;
   left:50%;
-  bottom:0;
+  bottom:-20px;
   padding-bottom: 10px;
   margin-left:-40px;
   height:80px;
@@ -13,6 +13,98 @@
 @-webkit-keyframes bounce {
   0%       { bottom:5px; }
   25%, 75% { bottom:15px; }
+  12%, 87% { bottom:17px; }
   50%      { bottom:20px; }
   100%     {bottom:0;}
+}
+
+.group            {
+  position:relative;
+  margin-bottom:25px;
+}
+.input-signin{
+  font-size:18px;
+  padding:10px 10px 10px 5px;
+  width:100%;
+  border:none;
+  border-bottom:1px solid #757575;
+}
+.input-signin:focus         { outline:none; }
+
+/* LABEL ======================================= */
+label                {
+  color:#999;
+  font-size:18px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+
+/* active state */
+.input-signin:focus ~ label, .input-signin:valid ~ label        {
+  top:-20px;
+  font-size:14px;
+  color:rgba(57, 118, 222, 0.6);;
+}
+
+/* BOTTOM BARS ================================= */
+.bar    { position:relative; display:block; width:100%; }
+.bar:before, .bar:after     {
+  content:'';
+  height:2px;
+  width:0;
+  bottom:1px;
+  position:absolute;
+  background: rgba(57, 118, 222, 0.48);
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%;
+}
+
+/* active state */
+.input-signin:focus ~ .bar:before, .input-signin:focus ~ .bar:after {
+  width:50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+  position:absolute;
+  height:40%;
+  width:10%;
+  top:25%;
+  left:0;
+  pointer-events:none;
+  opacity:0.5;
+}
+
+/* active state */
+.input-signin:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to    { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+  from { background:#5264AE; }
+  to    { width:0; background:transparent; }
 }

@@ -65,7 +65,7 @@ const SocketIO_List = class SocketIO_List {
             client.on('clientRefresh', function (msg) {
                 console.log("Une liste a été actualisée "+msg.idList);
                 //broadcast emit here to refresh the other users on the list
-                client.broadcast.emit('serverRefresh/'+msg.idList, 'serverRefresh/'+msg.idList);
+                client.broadcast.emit('serverRefresh/'+msg.idList, msg);
                 // TODO: mettre un id après refresh pour identifier la liste
             });
 

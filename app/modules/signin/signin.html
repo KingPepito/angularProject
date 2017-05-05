@@ -1,20 +1,19 @@
 
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading text-center">
-            <h2 class="panel-title">Sign In</h2>
+<div class="container animated slideInDown">
+    <div class="">
+        <div class="text-center">
+            <h2>Sign In</h2>
         </div>
-        <div class="row text-center">
+        <div class="form-signin row text-center">
                 <div class="panel-body">
 
-                    <form ng-submit="connexion(idUser, password)">
-                        <p>Login</p>
-                        <input type="text" ng-model="idUser">
+                    <form ng-submit="connexion(formData.id, formData.pw)">
 
-                        <p>Password</p>
-                        <input type="password" ng-model="password">
-                        <p></p>
-                        <p><input class="btn btn-default" type="submit" value="Signin"></p>
+                        <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.id" label="ID" ></input-signin>
+
+                        <input-signin class="group col-lg-2 col-lg-offset-5" type-input="'password'" model="formData.pw" label="Password" ></input-signin>
+
+                        <input class="btn btn-default group col-lg-2 col-lg-offset-5" type="submit" value="Signin"></p>
                     </form>
                 </div>
             <div style="color:maroon" role="alert">
