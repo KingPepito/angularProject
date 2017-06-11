@@ -1,0 +1,15 @@
+<div class="animated {{vm.animation}}">
+    <div class="container col-xs-8 col-xs-offset-2 " >
+
+        <p class="text-center">Please enter the title of your new super list!</p>
+
+        <form class="input-group">
+            <input type="text" ng-model="titleList" class="form-control input-monospace input-lg text-center" >
+            <div class="input-group-btn">
+                <button ng-submit="vm.addList(titleList)" ng-click="vm.addList(titleList)" class="btn-plus transition-05" ></button>
+            </div>
+        </form>
+
+    </div>
+    <button class="btn-ok col-xs-4 col-xs-offset-4  transition-05" ng-click="vm.hideForm()">Thanks</button>
+</div>

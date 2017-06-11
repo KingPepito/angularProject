@@ -6,7 +6,7 @@
 
 
 
-    function SigninController($scope, $http, $interval, $location) {
+    function SigninController($scope, $http, $interval, $location, userAccountService) {
 
         
         $scope.connexion = function (user, password) {

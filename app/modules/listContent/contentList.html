@@ -19,7 +19,7 @@
 
         <div class="panel-body">
             <table class="list table table-bordered">
-                <tr class="text-center element-list" ng-repeat="element in list track by $index">
+                <tr class="text-center no-border" ng-repeat="element in list track by $index">
                     
                     <td ng-model="elementsList[$index]" class="animated " ng-class="elementsList[$index].animation">
                         <element-list index="$index" id-list="idList" refresh-list="refreshList" content="element"></element-list>
@@ -28,29 +28,32 @@
                 </tr>
             </table>
 
-            <hr class="col-lg-4 col-lg-offset-4">
 
-            <div class="menu-list col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
-                <div class="col-xs-12">
-                    <h2 class="text-center">
-                    </h2>
 
-                    <form ng-submit="addElementToList(addContent)" class="">
-                        <input class="input-round col-xs-6" type="text" ng-model="addContent" placeholder=" Add element"/>
-                        <input type="submit" class="btn btn-default submit-btn col-xs-6" value="Add" />
+            <div class="menu-list col-lg-8 col-lg-offset-2 col-sm-10 col-xs-offset-1">
+                <div class="col-xs-12 marged-bottom" id="addForm">
+                    <!--<form ng-submit="addElementToList(addContent)" class="">-->
+                        <!--<input class="input-round col-xs-6" type="text" ng-model="addContent" placeholder=" Add element"/>-->
+                        <!--<input type="submit" class="btn btn-default submit-btn col-xs-6" value="Add" />-->
+                    <!--</form>-->
+
+                    <form class="input-group border-3 transition-1" ng-submit="addElementToList(addContent)">
+                        <input type="text" ng-model="addContent" class="form-control input-square height-70" >
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn-plus-square height-70 transition-05" ></button>
+                        </div>
                     </form>
                 </div>
-
+                <hr class="col-lg-4 col-lg-offset-4">
                 <div ng-hide="isGrantUserViewHide">
 
                     <form class="col-xs-12" ng-submit="grantUser(userToGrant)">
-                        <select class="input-round col-xs-6" ng-model="userToGrant" >
+                        <input list="users" class="input-round col-xs-6" ng-model="userToGrant">
+                        <datalist id="users">
                             <option ng-repeat="user in listUsers">{{user.pseudo}}</option>
-                        </select>
-                        <input type="submit" class="btn btn-default submit-btn col-xs-6" value="Grant an User">
+                        </datalist>
+                        <input type="submit" class="btn btn-default submit-btn col-xs-6 transition-05" value="Grant an User">
                     </form>
-
-                    <p style="color:#ac2925" id="error"> {{error}} </p>
 
                     <div class="col-xs-12">
 
@@ -68,6 +71,7 @@
                         </div>
                     </div>
 
+                    <p class="error col-xs-12"> {{error}} </p>
                 </div>
             </div>
 
@@ -78,6 +82,7 @@
 </div>
 
 
-<share-list class="container" url-list='urlList' display-share="displayShare" ng-hide="isShareListHidden">
+<share-list class="alert-box col-lg-4 col-lg-offset-4 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1" url-list='urlList'
+            display-share="displayShare" ng-hide="isShareListHidden" animation="'slideInUp'">
 
 </share-list>

@@ -1,41 +1,81 @@
 
-<div class="container">
+<div class="container {{classMask}}">
 
-    <div class="">
-        <div class="panel-heading">
-            <form  class="form-inline" ng-model="listForm" ng-hide="searchListView">
-                <h2 class="form-group">{{message}}</h2>
-                <input class="form-control" style="float: right;" type="text" ng-model="item" placeholder="search a list"/>
-            </form>
+    <div class="col-xs-12">
+        <div class="container marged-bottom marged-top animated bounceInRight">
+            <h2 class="form-group col-xs-12">{{message}}</h2>
+            <h3 class="marged-bottom" >You will find all your lists below, have fun!</h3>
         </div>
-        <div class="panel-body" >
-            <div class ='row animated bounceInRight' >
-                <div ng-repeat="list in listList | filter: {name: item}" >
-                    <div class="list-fiche col-lg-2 col-lg-offset-0 col-xs-8 col-xs-offset-2 " id="{{list.name}}">
-                        <div class="clickable list-icone" ng-click="showList(list)" >
 
-                            <h3 class="text-center">{{list.name}}</h3>
+        <div class="container marged-bottom col-xs-10 col-xs-offset-1">
+            <button class="btn-choice transition-05 col-lg-3" ng-click="scrollTo('list-container')">Lists</button>
+            <button class="btn-choice transition-05 col-lg-3 col-lg-offset-1" ng-click="scrollTo('group-users-container')">Group Users</button>
+        </div>
 
-                        </div>
-                        <button class="sticky-btn center-block btn btn-danger" ng-click="deleteList(list._id)">Delete</button>
-                    </div>
-                </div>
-            </div>
+        <form class="marged-bottom transition-delay-1 animated bounceInLeft col-xs-12" ng-model="listForm" ng-hide="searchListView">
 
+            <input class="marged-bottom col-xs-8 col-xs-offset-2 input-round-lg " type="text" ng-model="item" placeholder="search a list"/>
+        </form>
 
-
-
-            <div class="row">
-                <div class="center-block ">
-                    <new-list>
+        <div class="marged-bottom container" id="list-container">
+            <div class ='animated bounceInRight' >
+                <div class="col-lg-2 col-lg-offset-0 col-xs-8 col-xs-offset-2 ">
+                    <new-list show-form="displayNewList" >
 
                     </new-list>
                 </div>
+                <div ng-repeat="list in listList | filter: {name: item}" >
+                    <div class="list-fiche col-lg-2 col-lg-offset-0 col-xs-8 col-xs-offset-2" id="{{list.name}}">
+                        <div class="btn-unstick">
+                            <div class="clickable list-icone" ng-click="showList(list)" >
 
+                                <h3 class="col-lg-1 text-center">{{list.name}}</h3>
 
+                            </div>
+                            <button class="sticky-btn center-block btn btn-danger" ng-click="deleteList(list._id)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="marged-bottom container" id="group-users-container">
+            <div class ='animated bounceInRight' >
+                <h3>
+                    Hey! Did you know that you can create some users group?
+                    It would improve the lists organization
+
+                </h3>
+
+                <div class="container">
+
+                    <div class="col-lg-2 col-lg-offset-5 blob transition-05 animation-repeat"></div>
+                </div>
             </div>
 
         </div>
     </div>
 
 </div>
+
+
+<div ng-hide="isAddListFormHidden" class="alert-box col-lg-4 col-lg-offset-4 col-xs-10 col-xs-offset-1">
+    <new-list-popup hide-form="displayNewList" id="newList" add-list="newList" animation="'slideInUp'"></new-list-popup>
+</div>
+<!--<div class="container-fluid" ng-hide="newListView">-->
+    <!--<div class="alert-box centeredEleme nt" >-->
+
+
+        <!--<p class="text-center">Please enter the title of your new super list!</p>-->
+
+        <!--<div class="input-group">-->
+            <!--<input type="text" class="form-control input-monospace input-lg text-center" >-->
+            <!--<div class="input-group-btn">-->
+                <!--<button class="btn-copy" ng-click="copyToClipboard()"></button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<button class="btn-ok center-block">OK</button>-->
+    <!--</div>-->
+<!--</div>-->

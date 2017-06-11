@@ -1,17 +1,15 @@
+<div class="animated {{vm.animation}}">
+    <div id="share">
 
-<div class="alert-box col-xs-6 col-xs-offset-3" id="share">
-
-    <div class="container-fluid">
         <p class="text-center">Hey, just copy this url to share the list with your friends, colleague, mother, cat...</p>
 
         <div class="input-group">
             <input type="text" class="form-control input-monospace input-lg text-center" value="{{vm.urlList}}" readonly="">
             <div class="input-group-btn">
-                <button class="btn-copy" ng-click="copyToClipboard()"></button>
+                <button class="btn-copy transition-05" ng-click="copyToClipboard()"></button>
             </div>
         </div>
     </div>
 
-    <button class="btn-ok center-block" ng-click="vm.displayShare()">OK</button>
-
+    <button class="btn-ok transition-05 center-block" ng-click="vm.displayShare()">Got it!</button>
 </div>

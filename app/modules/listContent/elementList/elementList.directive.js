@@ -84,7 +84,7 @@ function ElementListDirectiveController($scope, $http) {
                     //Set a little delay cause to avoid the animation to execut on the next line,
                     //the first animation bounceIn last 0.75 sec
                     setTimeout(function () {
-                        vm.refreshList(true, "shake");
+                        vm.refreshList(true, "fadeInUp");
                         vm.animation = "bounceIn";
                     },750);
                 },

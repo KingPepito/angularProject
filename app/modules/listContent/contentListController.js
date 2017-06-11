@@ -87,7 +87,7 @@
                                  }, 750);
                              }
                             updateElementFromList(newList[index], index);
-
+                            console.log(element)
                         }
                     });
 
@@ -168,11 +168,12 @@
             $http.post('/list/' + idList + '/element', {newElement:newElement})
                 .then(
                     function (res) {
-                        refreshList(true);
+                        refreshList(true, "bounceInUp");
                         socket.emit('clientRefresh', {
                             idList:idList,
-                            animation: "bounceIn"
+                            animation: "bounceInUp"
                         });
+                        //smoothScroll( document.getElementById("addForm") );
                     },
                     function (err) {
                         showError("An error occured please try again later")
@@ -249,14 +250,14 @@
         $scope.share = function(){
             let domain = "localhost:1337/#!/contentListUrl/";
 
-            console.log("share");
+            console.log("share" + currentList.url);
             if ($scope.isUrlExist()){
                 $scope.urlList = domain + currentList.url;
-                refreshList();
                 $scope.displayShare();
             }
             else { listService.addUrl(idList).then(function (url) {
                 $scope.urlList = domain + url;
+                refreshList();
                 $scope.displayShare();
             })}
 
@@ -271,7 +272,7 @@
             $scope.classMask = ($scope.isShareListHidden) ? "" : "disabled";
 
             let element = document.getElementById('share');
-            smoothScroll(element);
+            smoothScroll(element, {offset:150});
         };
 
         $scope.$on('$locationChangeStart', function( event ) {
@@ -303,7 +304,7 @@
             }, 750);
         };
         $scope.hideEdit = true;
-        $scope.isShareListHidden = true;    
+        $scope.isShareListHidden = true;
         $scope.classMask = "";
         $scope.list = [];
 

@@ -4,7 +4,7 @@
 (function () {
 
 
-    function ListController($scope, $http, $location, $anchorScroll) {
+    function ListController($scope, $http, $location, smoothScroll, userAccountService) {
 
         let user;
 
@@ -13,6 +13,7 @@
                 if(res.data.user == ""){
                     $location.path('/');
                 }
+                else{userAccountService.isUserConnected = true;}
             })
         }();
 
@@ -32,7 +33,6 @@
         $scope.newList = function (name) {
             $http.post('/list', {name: name})
                 .then(function (res) {
-                    console.log($scope.listName);
                     //Clear listname input
                     $scope.listName = "";
                     refreshUserLists();
@@ -83,8 +83,25 @@
             return new Array(num);
         };
 
+        $scope.displayNewList= function () {
+            $scope.animationAddListForm = ($scope.animationAddListForm == "") ? "slideInDown" : "";
+
+            $scope.isAddListFormHidden = !$scope.isAddListFormHidden;
+            $scope.classMask = ($scope.isAddListFormHidden) ? "" : "disabled";
+            console.log($scope.isAddListFormHidden);
+            let element = document.getElementById('newList');
+
+            smoothScroll(element);
+        };
+
+        $scope.scrollTo = function (idDiv) {
+            let element = document.getElementById(idDiv);
+            smoothScroll(element)
+        };
+
         //the newlist view is hidded by default
-        $scope.newListView = true;
+        $scope.isAddListFormHidden = true;
+        $scope.animationAddListForm = "";
         //the field for search the list is showed by default
         $scope.searchListView = false;
         $scope.item = "";

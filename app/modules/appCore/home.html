@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="/app/css/style.css" />
     <link rel="stylesheet" href="/app/css/anim.css" />
     <link rel="stylesheet" href="/app/css/animate.css" />
+    <link rel="stylesheet" href="/app/css/aos.css" />
 
     <base href="/" />
 
     <script src="/node_modules/angular/angular.js"></script>
     <script src="/node_modules/angular-route/angular-route.js"></script>
     <script src="/node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script src="/node_modules/aos/dist/aos.js"></script>
     <script src="/app/modules/appCore/homeModule.js"></script>
     <script src="/app/modules/appCore/homeController.js"></script>
     <script src="/app/modules/signin/signinController.js"></script>
@@ -23,13 +25,15 @@
     <script src="/app/modules/listContent/contentListController.js"></script>
     <script src="/app/modules/listContent/elementList/elementList.directive.js"></script>
     <script src="/app/modules/signin/inputSignin.directive.js"></script>
-    <script src="/app/modules/listsUser/newList.js"></script>
+    <script src="/app/modules/listsUser/newList/newList.directive.js"></script>
+    <script src="/app/modules/listsUser/newList/newListPopup.directive.js"></script>
     <script src="/app/modules/urlGenerator/urlGenerator.directive.js"></script>
     <script src="/app/modules/listUrl/listUrlController.js"></script>
     <script src="/node_modules/ngSmoothScroll/lib/angular-smooth-scroll.js"></script>
     <script src="/node_modules/angular-clipboard/angular-clipboard.js"></script>
     <script src="/app/modules/appCore/bouncing-arrow.directive.js"></script>
     <script src="/app/modules/shareListByUrl/shareList.directive.js"></script>
+
 </head>
 <body ng-app = "myApp" ng-controller = "HomeController">
     <nav class="navbar navbar-default">
@@ -45,7 +49,9 @@
             </li>
 
             <li role="presentation">
-                <a class="btn btn-default navbar-btn" ng-click="goHome(true, '/')">Deconnect</a>
+                <a class="btn btn-default navbar-btn" ng-click="goHome(true, '/')" >Deconnect</a>
+                <!--<a class="btn btn-default navbar-btn" ng-click="goHome(true, '/')" ng-hide="!userAccountService.isUserConnected">Deconnect</a>-->
+                <!--<a class="btn btn-default navbar-btn" ng-click="goHome(false, '/signIn')" ng-hide="userAccountService.isUserConnected">Sign In</a>-->
             </li>
 
 
@@ -56,12 +62,12 @@
     </nav>
 
     <!--<div class="container view">-->
-        <ng-view></ng-view>
+        <ng-view class="marged-bottom"></ng-view>
     <!--</div>-->
 
 
 
-    <footer class="footer navbar-fixed-bottom">
+    <footer class="footer">
 
         <div class="centeredElement">
             <p> App made by <a href="https://www.linkedin.com/in/antoine-chan-550a18a5?trk=nav_responsive_tab_profile_pic">KingPepito</a></p>

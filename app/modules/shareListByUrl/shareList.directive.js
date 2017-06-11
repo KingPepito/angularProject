@@ -12,7 +12,8 @@ function shareList() {
         restrict: 'E',
         scope: {
             urlList: '=',
-            displayShare: '='
+            displayShare: '=',
+            animation: '='
         },
         controller: ShareDirectiveController,
         bindToController: true,
@@ -28,7 +29,7 @@ ShareDirectiveController.$inject = ['$scope', '$http', 'clipboard'];
 function ShareDirectiveController ($scope, $http, clipboard) {
 
     let vm = this;
-
+    
     if (!clipboard.supported) {
         console.log('Sorry, copy to clipboard is not supported');
     }

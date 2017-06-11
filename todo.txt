@@ -6,7 +6,6 @@ TODO
 
 directive list dans lists user
 son notifs
-avis code couleur sur chaque élément
 Fix non actualisation premier élément ajouté
 set a password
 Directive: error, users connected, add, edit, line
@@ -21,9 +20,22 @@ virer bouton edit et edit direct dans le champs?
 disparition en 5 secondes, ou on a la possibilité d'annuler
 possibilité agrandir les element liste
 switché deconnect en connect quand pas co
-email de verif
-fixer inscription
-
+email de verif	
+bouton +1 pour les list element (remplir la barre en fct dunbr de vote)
+mettre service socket.io client side
+ajouter descriptif list
+tableau définti de couleur pour iconuser
+section à propos
+animation transition entre chaque page?
+click en dehors de l'alert box = hide
+faire welcome plus abouti
+groupe utilisateurs => bullesinterrelié facon user connected + floating anim		
+liste grisé quand non modifiable (listByURL)
+log des modifications sur les lists ex "michel à ajouté un element" (temporaire 5-10 sec?)
+AOS Library => fondu en descednant la page welcome
+renommer home en "motor" ou équivalent
+voir Jenkins / Maven pour déploiement continu
+changer le mode try en contruction de list puis sauvegarde si l'user s'inscrit
 
 DONE
 
@@ -34,3 +46,9 @@ voir animation liste (animate.css, bulma)
 faire un tableau d'icone pour les utilisateurs
 directive element tableau
 bouton partager sur list user, création d'un url sans droit de modif
+grande bar de recherche + carte ajout simialaire aux autres carte list
+shadow icon list
+fixer inscription
+ajouter utilisateur suggestion en tapant
+ombre alert box + changer text en return ?
+colorier case element

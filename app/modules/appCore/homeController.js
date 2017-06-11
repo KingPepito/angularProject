@@ -4,7 +4,7 @@
 
 (function () {
 
-    function HomeController($scope, $http, $location) {
+    function HomeController($scope, $http, $location, userAccountService) {
 
         $scope.subscribe = function () {
             $location.path('/subscribe');
@@ -15,14 +15,18 @@
         };
 
         $scope.goHome = function (decoUser, path) {
+
             if (decoUser) {
+                userAccountService.isUserConnected = false;
                 $location.path(path);
                 $http.get('/deconnexion');
             }
             else {
                 $location.path(path);
             }
-        }
+        };
+
+        AOS.init();
     }
 
     angular.module('myApp').controller("HomeController", HomeController);

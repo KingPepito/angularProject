@@ -9,19 +9,23 @@
 
         $scope.subscribe = function () {
             console.log($scope.formData);
-            checkForm($scope.formData.password, $scope.formData.password2, $scope.formData.idUser, $scope.formData.email).then(function () {
+            checkForm($scope.formData.password, $scope.formData.password2, $scope.formData.username, $scope.formData.email).then(function () {
 
                     $http({
                         method: 'POST',
                         url: '/subscribe',
                         data: {
-                            username : $scope.formData.user,
+                            username : $scope.formData.username,
                             pw : $scope.formData.password,
                             email : $scope.formData.email
                         }
                     }).then(function successCallback(response) {
                         console.log("subscribe success");
                         $scope.message = "Account created ! Let's try it now";
+                        setTimeout(function () {
+                            $location.path('/signIn');
+                        }, 3000);
+
                     }, function errorCallback(response) {
                         console.log("erreur inscription "+ response.data);
                         $scope.message = response.data;

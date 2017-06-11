@@ -26,7 +26,7 @@ ControllerBouncingArrow.$inject = ['$scope', '$location', 'smoothScroll'];
 
 function ControllerBouncingArrow($scope, $location, smoothScroll) {
     $scope.clickArrow = function () {
-        var element = document.getElementById('caca');
+        var element = document.getElementById('welcome-container');
         smoothScroll(element);
     };
 }

@@ -1,22 +1,25 @@
-<div class="col-xs-8 col-xs-offset-2 form-signin animated slideInDown text-center">
-    <div class="panel-body ">
+<div class="container animated slideInDown">
+    <div class="col-xs-8 col-xs-offset-2 form-signin transition-05 text-center">
+        <div class="panel-body ">
 
-        <h2>Subscribe</h2>
-        <h3>Please enter your information here :</h3>
-        <form ng-submit="subscribe()">
-            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.idUser" label="Id" ></input-signin>
-            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.password" type-input="'password'" label="Password" ></input-signin>
-            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.password2" type-input="'password'" label="Password again" ></input-signin>
-            <input-signin class="group col-lg-2 col-lg-offset-5" model="formData.email" label="Email" ></input-signin>
-            <input class="btn btn-default group col-lg-2 col-lg-offset-5" type="submit" value="Subscribe">
-        </form>
-        <h3>
-            {{message}}
-            {{error}}
-        </h3>
+            <h2>Subscribe</h2>
+            <h3>Please enter your information here :</h3>
+            <form ng-submit="subscribe()">
+                <input-signin class="group col-lg-4 col-lg-offset-4" model="formData.username" label="Id" ></input-signin>
+                <input-signin class="group col-lg-4 col-lg-offset-4" model="formData.password" type-input="'password'" label="Password" ></input-signin>
+                <input-signin class="group col-lg-4 col-lg-offset-4" model="formData.password2" type-input="'password'" label="Password again" ></input-signin>
+                <input-signin class="group col-lg-4 col-lg-offset-4" model="formData.email" label="Email" type-input="'email'" ></input-signin>
+                <input class="btn btn-default group col-lg-2 col-lg-offset-5" type="submit" value="Subscribe">
+            </form>
+            <h3>
+                {{message}}
+                {{error}}
+            </h3>
+        </div>
+
     </div>
-
 </div>
+
 
 
 

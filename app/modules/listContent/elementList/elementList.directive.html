@@ -1,16 +1,16 @@
 
-    <div class="font-app animated " ng-class="vm.animation" ng-mouseenter="vm.switchMenuVisibility(true)" ng-mouseleave="vm.switchMenuVisibility(false)">
+    <div class="font-app animated " data-aos="fade-up" ng-class="vm.animation" ng-mouseenter="vm.switchMenuVisibility(true)" ng-mouseleave="vm.switchMenuVisibility(false)">
 
         <form ng-submit="vm.editElementFromList(vm.index, newValue)" class=" ">
 
-            <div class="col-xs-12 element-list">
-                <div class="col-xs-8 col-xs-offset-2" ng-hide="elementsList.editing">{{vm.content}}</div>
+            <div class="col-xs-12 element-list transition-05">
+                <div class="col-xs-8 col-lg-offset-2 col-xs-offset-0" ng-hide="elementsList.editing">{{vm.content}}</div>
 
-                <input ng-hide="!elementsList.editing" type="text" class="input-lg col-xs-8 col-xs-offset-2" ng-model="newValue">
+                <input ng-hide="!elementsList.editing" type="text" class="input-round col-xs-8 col-xs-offset-2" ng-model="newValue">
 
-                <div class="col-xs-2 animated" ng-class="vm.animationMenu" >
-                    <div ng-click="vm.deleteElementFromList($index)" class="btn-delete pull-right marged-right"></div>
-                    <div ng-click="vm.showEdit()"  class="btn-edit pull-right marged-right"></div>
+                <div class="col-lg-2 col-xs-4 animated" ng-class="vm.animationMenu" >
+                    <div ng-click="vm.deleteElementFromList($index)" class="btn-delete btn-unstick pull-right marged-right"></div>
+                    <div ng-click="vm.showEdit()"  class="btn-edit btn-unstick pull-right marged-right"></div>
                 </div>
             </div>
             <!--<hr class="col-xs-4 col-xs-offset-4">-->

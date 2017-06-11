@@ -36,6 +36,12 @@
             });
     });
 
+    angular.module("myApp").factory("userAccountService", function(){
+        return {isUserConnected : false};
+
+
+    });
+
     angular.module("myApp").factory("listService", function($http, $location){
         let elementsListService = {};
 
@@ -57,14 +63,11 @@
                 $http.put('list/'+ idList +'/generateUrl')
                     .then(function (res) {
                         resolve(res.data);
-                        alert(res.data);
                     })
             })
         };
 
         return elementsListService;
-
-
     });
 
     angular.module("myApp").factory("userService", function($http, $location){
@@ -88,7 +91,7 @@
 
         listElementService.grantUser = function (user, idList) {
 
-            let promise = new Promise(function (resolve, reject) {
+            return new Promise(function (resolve, reject) {
 
                 if(!user){ reject("Please select a user to grant");}
                 else{
@@ -98,8 +101,6 @@
                     });
                 }
             });
-            
-            return promise;
         };
 
         return listElementService;
